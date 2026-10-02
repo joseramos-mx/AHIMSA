@@ -1,7 +1,8 @@
 "use client";
 
 import { createElement, type ReactNode } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 type RevealTag = "div" | "section" | "article" | "span" | "ul" | "li" | "h2" | "h3" | "h4" | "p";
 

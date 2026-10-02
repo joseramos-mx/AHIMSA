@@ -31,6 +31,17 @@ export type DaySlide =
   | {
       id: string;
       type: "momentos";
+      /**
+       * Composición del slide (medidas tomadas del mockup de Figma):
+       *  - "bleed": moments[1] a sangre (alto completo) a la izquierda,
+       *    moments[0] cuadrada arriba a la derecha, textos debajo.
+       *  - "split": moments[0] vertical a la izquierda, moments[1] cuadrada
+       *    al centro (ahí arranca el trazo 2), textos a la derecha.
+       *  - "single": un solo momento, imagen alta a la izquierda (ahí
+       *    aterriza el avión del trazo 2) y texto a la derecha.
+       *  - sin layout: fila flexible genérica.
+       */
+      layout?: "bleed" | "split" | "single";
       moments: DayMoment[];
       closing?: DayClosing;
     };
@@ -63,6 +74,7 @@ export const SLIDES: DaySlide[] = [
   {
     id: "manana",
     type: "momentos",
+    layout: "bleed",
     moments: [
       {
         time: "08:30",
@@ -70,7 +82,7 @@ export const SLIDES: DaySlide[] = [
         text: "Empezamos sin prisa, en un café de barrio que no sale en las guías.",
         image: {
           src: "/media/day/desayuno.jpg",
-          alt: "Mesa de café parisino con croissant, taza de café y jugo de naranja sobre mármol.",
+          alt: "Mesa de café parisino con crepas, fresas con crema, tazas de chocolate caliente y una tetera de plata.",
         },
       },
       {
@@ -79,7 +91,7 @@ export const SLIDES: DaySlide[] = [
         text: "Entrada con horario reservado y la ruta exacta para ver lo importante sin cansar a los niños.",
         image: {
           src: "/media/day/louvre.jpg",
-          alt: "Pirámide del Louvre iluminada por la luz de la mañana, con pocos visitantes alrededor.",
+          alt: "Pirámide de cristal del Louvre frente a la fachada del palacio, con la luz cálida de la mañana.",
         },
       },
     ],
@@ -87,14 +99,15 @@ export const SLIDES: DaySlide[] = [
   {
     id: "tarde",
     type: "momentos",
+    layout: "split",
     moments: [
       {
         time: "13:30",
         title: "Picnic frente a la Torre Eiffel",
         text: "Pan, quesos y vino del mercado, en el mejor rincón del Campo de Marte.",
         image: {
-          src: "/media/day/picnic-eiffel-2.jpg",
-          alt: "Pareja compartiendo una tabla de quesos sobre una manta a cuadros frente a la Torre Eiffel.",
+          src: "/media/day/picnic-eiffel.jpg",
+          alt: "Picnic con baguettes, vino blanco y fruta sobre el pasto del Campo de Marte, con la Torre Eiffel al fondo.",
         },
       },
       {
@@ -103,7 +116,7 @@ export const SLIDES: DaySlide[] = [
         text: "Caminata por los puestos de los bouquinistes hasta Notre Dame.",
         image: {
           src: "/media/day/bouquinistes.jpg",
-          alt: "Puestos verdes de los bouquinistes a orillas del Sena con libros antiguos y grabados a la vista.",
+          alt: "Mujer con bolsa de palma revisando grabados y fotografías antiguas en un puesto callejero junto al Sena.",
         },
       },
     ],
@@ -111,6 +124,7 @@ export const SLIDES: DaySlide[] = [
   {
     id: "noche",
     type: "momentos",
+    layout: "single",
     moments: [
       {
         time: "20:00",
@@ -118,16 +132,9 @@ export const SLIDES: DaySlide[] = [
         text: "Cena con vista y la torre iluminada para cerrar el día.",
         image: {
           src: "/media/day/paris-noche.jpg",
-          alt: "Torre Eiffel iluminada por la noche vista desde una terraza, con mesa servida en primer plano.",
+          alt: "Pareja en el balcón de un edificio parisino al anochecer, con la Torre Eiffel iluminada al fondo.",
         },
       },
     ],
-    closing: {
-      title: "Este es solo un día. ¿Diseñamos el tuyo?",
-      cta: {
-        label: "Cotiza tu viaje",
-        href: "/contacto?tipo=family-europe",
-      },
-    },
   },
 ];

@@ -5,12 +5,12 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
   type MotionValue,
 } from "motion/react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 import {
   SLIDES,
   type DayImage,

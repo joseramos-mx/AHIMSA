@@ -26,7 +26,7 @@ export const NICHES: Niche[] = [
     description:
       "Circuitos armados o itinerarios a tu medida por París, Roma, Madrid y más, pensados para viajar en familia.",
     image: "/media/niches/family-europe.jpg",
-    alt: "Familia caminando por una calle empedrada de una ciudad europea al atardecer.",
+    alt: "Columnas del Foro Romano y cúpulas de iglesias bajo un cielo azul en Roma.",
   },
   {
     slug: "magic-families",
@@ -34,7 +34,7 @@ export const NICHES: Niche[] = [
     description:
       "Orlando, Anaheim y Hawái. Parques, hoteles temáticos y todo resuelto para que los niños solo vivan la magia.",
     image: "/media/niches/magic-families.jpg",
-    alt: "Niños y padres mirando fuegos artificiales en un parque de atracciones iluminado al anochecer, sin marcas visibles.",
+    alt: "Rueda de la fortuna y montaña rusa iluminadas al anochecer, reflejadas en el lago de un parque de atracciones.",
   },
   {
     slug: "premium-resorts",
@@ -42,7 +42,7 @@ export const NICHES: Niche[] = [
     description:
       "Todo incluido de lujo en el Caribe, con suites, albercas infinitas y conciertos sin salir del hotel.",
     image: "/media/niches/premium-resorts.jpg",
-    alt: "Alberca infinita de un resort premium frente al mar Caribe al mediodía.",
+    alt: "Terrazas blancas de un hotel en Santorini con alberca privada y camastros sobre el acantilado.",
   },
   {
     slug: "legacy-journeys",
@@ -50,6 +50,6 @@ export const NICHES: Niche[] = [
     description:
       "XV años, bodas y lunas de miel. Viajes para celebrar los momentos que se recuerdan toda la vida.",
     image: "/media/niches/legacy-journeys.jpg",
-    alt: "Pareja de novios abrazados frente a un paisaje romántico europeo al atardecer.",
+    alt: "Cena romántica en la playa bajo un toldo con luces y velas, entre palmeras al anochecer.",
   },
 ];

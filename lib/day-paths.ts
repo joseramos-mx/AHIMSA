@@ -2,19 +2,20 @@
  * Trazos SVG a mano extraídos de /public/media/day/line1.svg y line2.svg.
  *
  * Son shapes rellenos (no strokes) exportados desde Figma. Por eso en
- * <DrawnPath> animamos su revelado con <clipPath>, no con pathLength.
+ * <DrawnPath> animamos su revelado con una máscara, no con pathLength directo.
  *
  * Para reemplazar el trazo por una nueva versión exportada:
  *  1. Abre el .svg exportado y copia el valor de `d` del <path>.
  *  2. Pégalo aquí dentro de PATH_1_D o PATH_2_D.
  *  3. Copia el `viewBox` del <svg> raíz y actualiza PATH_1_VIEWBOX /
  *     PATH_2_VIEWBOX con el mismo string.
- *  4. Si cambian las dimensiones, revisa la posición del trazo en
- *     DrawnPath (LINE_1_LAYOUT / LINE_2_LAYOUT) para que caiga encima
- *     del contenido donde corresponde.
+ *  4. Actualiza `startY` en LINE_*_LAYOUT con la y del primer punto
+ *     (el número después de la M) y revisa left / width / startTop.
  *
- * Si cambias la cantidad de slides, cambia también `LINE_*_LAYOUT.left`
- * y `.width` (porcentajes relativos al track completo).
+ * El contorno de un trazo "outline" va de ida por un borde y regresa por
+ * el otro, así que DrawnPath lo revela desde ambos extremos del contorno a
+ * la vez con una máscara (stroke-dasharray) y sigue el recorrido real,
+ * loops incluidos.
  */
 
 export const PATH_1_VIEWBOX = "0 0 1533.89 336.92";
@@ -26,34 +27,48 @@ export const PATH_2_D =
   "M1.2,171.32c10.98-14.45,24.17-27.11,38.58-38.1s30.01-20.41,46.08-28.8c16.4-8.56,33.31-16.08,50.38-23.19,18.18-7.58,36.58-14.62,55.17-21.13,18.45-6.46,37.08-12.39,55.86-17.8s37.86-10.31,56.99-14.67c19.13-4.36,38.39-8.17,57.73-11.46s38.82-6.03,58.34-8.23c19.5-2.2,39.06-3.86,58.66-4.98,19.59-1.12,39.22-1.69,58.84-1.72,19.62-.03,39.25.48,58.84,1.54,19.59,1.06,39.15,2.67,58.66,4.82,19.52,2.16,38.97,4.87,58.34,8.13s38.6,7.07,57.73,11.44c9.6,2.19,19.17,4.52,28.71,6.99,8.62,2.23,17.26,4.46,25.7,7.29,15.65,5.25,31.6,13.18,40.26,27.92,9.31,15.84,8.19,35.37,4.48,52.7s-10.15,35.86-18.55,52.29c-8.39,16.42-19.29,31.72-33.04,44.09-13.31,11.98-29.23,21.29-46.52,26.15-8.3,2.33-16.87,3.59-25.49,3.65l.54.31c-8.02-12.72,1.99-27.16,13.18-33.78,6.35-3.76,13.53-5.54,20.9-4.77,7.51.79,14.73,3.75,20.85,8.11,11.98,8.54,20.53,23.71,17.09,38.68-3.01,13.11-14.69,23.63-27.68,26.45-6.57,1.42-13.25.63-19.21-2.48-6.72-3.51-1.14-12.63,2.57-16.28,2.87-2.82,6.53-5.05,9.92-7.18s7.09-4.17,10.79-5.97c7.52-3.66,15.4-6.54,23.44-8.82,16.52-4.7,33.63-6.96,50.69-8.65s34.32-2.62,51.37-4.91c8.85-1.19,17.79-3.03,25.71-7.32,7.04-3.81,12.97-9.78,16.04-17.24,2.75-6.69,2.88-14.65-1.34-20.77-3.56-5.16-9.6-8.89-15.95-9.09-3.02-.09-5.99.72-8.52,2.38l.92.71c1.25-5.1,4.42-9.1,8.93-11.72,4.78-2.77,10.32-4.06,15.7-5.04,11.68-2.14,24.19-2.4,35.17-7.31,5.44-2.44,10.08-6.33,12.55-11.85l-.71.29c9.05,2.93,4.76,15.92,1,21.39-1.54,2.24-3.4,4.26-5.03,6.43s-3.32,4.61-4.55,7.16c-2.17,4.49-2.92,9.67.1,13.98,2.59,3.71,7.99,6.59,7.47,11.77-.44,4.29-5.17,6.68-8.72,8.04-4.52,1.73-9.3,2.31-13.94,3.57-5.13,1.4-10.08,3.46-14.71,6.09-10.47,5.93-19.26,14.76-24.99,25.35-.38.71.7,1.34,1.08.63,5.4-9.97,13.52-18.33,23.24-24.14,4.8-2.87,9.96-5.11,15.35-6.62,4.86-1.36,9.88-1.93,14.6-3.79,3.52-1.39,7.54-3.49,8.93-7.27,1.71-4.62-1.68-8.37-4.7-11.4-1.98-2-3.75-4.11-4.27-6.97s.29-5.71,1.48-8.26c2.44-5.24,6.52-9.23,9.75-13.94,4.3-6.26,8.21-20.01-1.75-23.23-.24-.08-.6.05-.71.29-4.86,10.89-17.39,13.91-28.08,15.71-6.16,1.03-12.37,1.71-18.52,2.82-5.42.98-10.95,2.26-15.82,4.93s-8.68,7.15-10.06,12.78c-.12.5.44,1.02.92.71,9.35-6.14,22.31,1.4,25.18,11.28,3.84,13.22-6.5,26.09-17.61,31.78-6.43,3.29-13.54,5-20.64,6.14s-13.84,1.74-20.78,2.39c-13.39,1.26-26.81,2.22-40.18,3.67-26.01,2.83-52.6,7.52-75.59,20.66-2.85,1.63-5.63,3.38-8.33,5.26-2.37,1.65-4.79,3.31-6.72,5.48-2.94,3.31-6,8.44-4.83,13.07.56,2.21,2.13,3.43,4.06,4.43,2.14,1.11,4.44,1.93,6.8,2.44,4.88,1.04,9.97.73,14.76-.6,9.86-2.75,18.66-9.7,23.52-18.71,5.26-9.76,4.86-21.29.08-31.17-5.02-10.37-14.35-18.51-25.04-22.65-5.21-2.01-10.95-3.17-16.55-2.85-5.45.31-10.76,2.07-15.49,4.77-8.71,4.97-16.75,13.89-17.3,24.35-.12,2.4.2,4.84.98,7.12.38,1.13.87,2.22,1.45,3.26.22.4.48,1.09.89,1.33.55.32,1.71.07,2.32.05,6.58-.18,13.15-1.06,19.56-2.57,26.09-6.13,49.1-22.27,65.85-42.93,17.57-21.65,28.88-47.94,35.79-74.8,3.31-12.88,5.47-26.47,3.77-39.77s-7.26-24.35-16.96-32.86-20.97-13.11-32.64-16.89c-13.34-4.32-27.07-7.61-40.7-10.89-28.65-6.9-57.59-12.55-86.73-16.96-29.19-4.42-58.57-7.6-88.02-9.53-29.41-1.93-58.9-2.63-88.36-2.11-29.47.53-58.92,2.28-88.24,5.25-29.38,2.98-58.63,7.18-87.66,12.59-28.97,5.4-57.71,12.02-86.12,19.84-28.55,7.86-56.77,16.94-84.54,27.22s-53.2,20.66-78.76,33.24-48.09,26.08-68.59,44.1c-9.72,8.55-18.64,17.98-26.48,28.28-.49.64.6,1.26,1.08.63h0Z";
 
 /**
- * Posición de cada trazo DENTRO del track (porcentajes del ancho total).
- * - left: desplazamiento desde el inicio del track
- * - width: ancho del trazo (height se calcula vía aspect-ratio)
- * - top: posición vertical dentro del slide (porcentaje del alto del viewport)
+ * Posición de cada trazo dentro del track, en unidades de viewport
+ * (medidas del mockup de Figma). El track mide SLIDES.length × 100vw, así
+ * que el slide i empieza en i × 100vw.
+ * - left / width: vw desde el inicio del track (height sale del viewBox)
+ * - startTop: vh donde cae el PUNTO INICIAL del trazo
+ * - startY: coordenada y del punto inicial dentro del viewBox
  *
- * Están pensados para 4 slides. Si cambia el número de slides, reajusta
- * para que la línea quede sobre el contenido.
+ * Anclajes:
+ * - Línea 1: arranca detrás de la imagen del intro, asoma por su borde
+ *   derecho (61.2vw), hace el loop (~78–87vw) y su cola termina detrás de
+ *   la imagen a sangre del slide "manana" (107.3–143.6vw).
+ * - Línea 2: sale del borde superior de la imagen cuadrada del slide
+ *   "tarde" (slide 2, 33.9vh) y el avión dibujado aterriza en el borde
+ *   izquierdo de la imagen del slide "noche" (slide 3, 310vw). El avión
+ *   está en x ≈ 1012 del viewBox, así que width = (309.5 - left) / 0.9956.
  */
-export const LINE_1_LAYOUT = {
-  left: 6, // %
-  top: 42, // %
-  width: 42, // %
+export type LineLayout = {
+  left: number;
+  width: number;
+  startTop: number;
+  startY: number;
 };
 
-export const LINE_2_LAYOUT = {
-  left: 50,
-  top: 30,
-  width: 44,
+export const LINE_1_LAYOUT: LineLayout = {
+  left: 58.5,
+  width: 75.8,
+  startTop: 61.3,
+  startY: 336.91,
+};
+
+export const LINE_2_LAYOUT: LineLayout = {
+  left: 245.1,
+  width: 64.7,
+  startTop: 33.9,
+  startY: 171.32,
 };
 
 /**
- * El trazo se dibuja ligeramente adelantado respecto al desplazamiento
- * del track, para que la "punta de la pluma" siempre esté dentro del
- * viewport. Sube este valor si quieres que el trazo vaya aún más
- * adelantado; bájalo (incluso a negativo) si prefieres que vaya a la
- * zaga.
- *
- * El cálculo final es: drawFraction = (p * (N-1) + 1) / N + LEAD
- * donde N = SLIDES.length y p = scroll progress 0..1.
+ * Posición de la "punta de la pluma" medida desde el borde izquierdo del
+ * viewport, en vw. El trazo se dibuja hasta ese punto del track, así que la
+ * punta siempre queda a esta distancia del borde mientras scrolleas. Con
+ * 61 la línea 1 asoma por el borde de la imagen del intro justo al entrar
+ * a la sección.
  */
-export const DRAW_LEAD = 0.06;
+export const DRAW_TIP_VW = 61;

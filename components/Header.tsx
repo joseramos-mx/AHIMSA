@@ -5,10 +5,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValueEvent,
-  useReducedMotion,
   useTransform,
   type MotionValue,
 } from "motion/react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { NAV_LINKS, CTA } from "@/lib/nav";
 import MobileMenu from "./MobileMenu";
 

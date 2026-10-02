@@ -1,27 +1,40 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
+  animate,
   motion,
+  useInView,
   useMotionTemplate,
+  useMotionValue,
   useTransform,
   type MotionValue,
 } from "motion/react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 type RevealImageProps = {
   src: string;
   alt: string;
   sizes?: string;
   className?: string;
-  /** 0..1 motion value controlling the reveal. */
-  progress: MotionValue<number>;
+  /**
+   * 0..1 motion value que controla el reveal (p. ej. el scroll horizontal de
+   * DayInParis). Si se omite, el reveal se dispara solo una vez al entrar en
+   * pantalla.
+   */
+  progress?: MotionValue<number>;
   /** When (in `progress`) the reveal starts. Default 0.1 */
   revealStart?: number;
   /** When (in `progress`) the reveal completes. Default 0.5 */
   revealEnd?: number;
   /** Extra translateX motion for parallax (px). Optional. */
   parallaxX?: MotionValue<number>;
+  /**
+   * Parallax vertical de la imagen dentro de su marco (p. ej. "-4%".."4%").
+   * La imagen se agranda un 5% arriba y abajo para no dejar huecos.
+   */
+  parallaxY?: MotionValue<string>;
 };
 
 /**
@@ -38,13 +51,36 @@ export default function RevealImage({
   revealStart = 0.1,
   revealEnd = 0.5,
   parallaxX,
+  parallaxY,
 }: RevealImageProps) {
   const [failed, setFailed] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+
+  // Modo "al entrar en pantalla": progreso propio animado de 0 a 1.
+  const ownProgress = useMotionValue(0);
+  const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
+  useEffect(() => {
+    if (progress) return;
+    if (reduce) {
+      ownProgress.set(1);
+    } else if (inView) {
+      const controls = animate(ownProgress, 1, {
+        duration: 1.2,
+        ease: [0.22, 1, 0.36, 1],
+      });
+      return () => controls.stop();
+    }
+  }, [progress, reduce, inView, ownProgress]);
+
+  const p = progress ?? ownProgress;
+  const start = progress ? revealStart : 0;
+  const end = progress ? revealEnd : 1;
 
   // Clip-path inset(top right bottom left). Reveal de abajo hacia arriba.
-  const insetTop = useTransform(progress, [revealStart, revealEnd], [100, 0]);
+  const insetTop = useTransform(p, [start, end], [100, 0]);
   const clipPath = useMotionTemplate`inset(${insetTop}% 0 0 0)`;
-  const scale = useTransform(progress, [revealStart, revealEnd], [1.15, 1]);
+  const scale = useTransform(p, [start, end], [1.15, 1]);
 
   const containerStyle = parallaxX
     ? { x: parallaxX, clipPath }
@@ -54,7 +90,8 @@ export default function RevealImage({
 
   return (
     <motion.div
-      className={`relative overflow-hidden bg-ink/10 ${className}`}
+      ref={ref}
+      className={`relative overflow-hidden bg-[#DCD8D1] ${className}`}
       style={containerStyle}
     >
       {failed ? (
@@ -65,8 +102,10 @@ export default function RevealImage({
         </div>
       ) : (
         <motion.div
-          className="absolute inset-0 will-change-transform"
-          style={{ scale }}
+          className={`absolute inset-x-0 will-change-transform ${
+            parallaxY ? "-inset-y-[5%]" : "inset-y-0"
+          }`}
+          style={parallaxY ? { scale, y: parallaxY } : { scale }}
         >
           <Image
             src={src}

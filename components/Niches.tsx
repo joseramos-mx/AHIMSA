@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { NICHES } from "@/lib/niches";
 import NicheCard from "./NicheCard";
 import Reveal from "./Reveal";

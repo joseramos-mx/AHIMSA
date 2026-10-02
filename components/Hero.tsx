@@ -5,10 +5,10 @@ import Link from "next/link";
 import { type RefObject, useEffect, useState } from "react";
 import {
   motion,
-  useReducedMotion,
   useTransform,
   type MotionValue,
 } from "motion/react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { CTA } from "@/lib/nav";
 
 type HeroProps = {

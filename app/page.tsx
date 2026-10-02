@@ -7,6 +7,8 @@ import Hero from "@/components/Hero";
 import Intro from "@/components/Intro";
 import Niches from "@/components/Niches";
 import DayInParisResponsive from "@/components/DayInParis/DayInParisResponsive";
+import CallToAction from "@/components/CallToAction";
+import HowWeWork from "@/components/HowWeWork/HowWeWork";
 
 export default function Page() {
   const heroRef = useRef<HTMLElement | null>(null);
@@ -34,15 +36,8 @@ export default function Page() {
       <Niches />
       <DayInParisResponsive />
 
-      {/* Placeholder para seguir probando el scroll después de la grilla */}
-      <section
-        className="min-h-screen bg-cream text-ink flex items-center justify-center px-6"
-        aria-label="Siguiente sección"
-      >
-        <p className="font-figtree text-base opacity-60">
-          Placeholder de 100vh — aquí va la siguiente sección.
-        </p>
-      </section>
+      <CallToAction />
+      <HowWeWork />
     </main>
   );
 }

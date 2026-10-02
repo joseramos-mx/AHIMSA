@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { CTA, NAV_LINKS } from "@/lib/nav";
 
 type MobileMenuProps = {

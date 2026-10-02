@@ -12,7 +12,7 @@ import type {
   DayMoment,
   DaySlide,
 } from "@/lib/day-in-paris";
-import RevealImage from "./RevealImage";
+import RevealImage from "@/components/RevealImage";
 
 type SlideProps = {
   slide: DaySlide;
@@ -123,62 +123,218 @@ function ClosingBlock({
   );
 }
 
+/**
+ * Medidas tomadas del mockup de Figma (frame 16:8.5 aprox.), expresadas en
+ * vw/vh para que escalen con el viewport. Los trazos de DrawnPath
+ * (lib/day-paths.ts) se anclan a los bordes de estas imágenes: si mueves
+ * una imagen, ajusta también el trazo correspondiente.
+ */
 function IntroLayout({
   intro,
   slideFocus,
-  parallax,
   index,
 }: {
   intro: DayIntro;
   slideFocus: MotionValue<number>;
-  parallax: MotionValue<number>;
   index: number;
 }) {
   return (
     <article
-      className="relative shrink-0 w-screen h-full flex items-center justify-center overflow-hidden"
+      className="relative z-10 shrink-0 w-screen h-full overflow-hidden"
       aria-label="Introducción"
     >
       <SlideDivider hidden={index === 0} />
 
-      <div className="relative">
+      <div
+        className="absolute"
+        style={{ left: "30.3vw", top: "20.6vh", width: "30.9vw", height: "66.7vh" }}
+      >
         <RevealImage
           src={intro.image.src}
           alt={intro.image.alt}
-          className="w-[260px] md:w-[320px] aspect-[2/3] rounded-[2px]"
+          className="h-full w-full rounded-[2px]"
           progress={slideFocus}
           revealStart={0.1}
           revealEnd={0.55}
-          sizes="(min-width: 1024px) 320px, 60vw"
-          parallaxX={parallax}
+          sizes="31vw"
         />
-        <h2 className="pointer-events-none">
-          <span
-            className="
-              absolute -top-10 -left-24
-              md:-top-16 md:-left-40
-              font-playfair font-normal
-              text-[68px] md:text-[96px] leading-none text-ink
-              whitespace-nowrap z-20
-            "
-          >
-            {intro.titleTop}
-          </span>
-          <span
-            className="
-              absolute -bottom-10 -right-24
-              md:-bottom-16 md:-right-40
-              font-playfair font-normal
-              text-[68px] md:text-[96px] leading-none text-ink
-              whitespace-nowrap z-20
-            "
-          >
-            {intro.titleBottom}
-          </span>
-        </h2>
       </div>
 
+      {/* top = baseline - 0.915em: coloca la línea base de Playfair donde
+          cae en el mockup (cualquier tamaño de fuente). */}
+      <h2 className="pointer-events-none font-playfair font-normal leading-none text-ink">
+        <span
+          className="absolute whitespace-nowrap z-20"
+          style={{ left: "25.1vw", top: "calc(21.4vh - 0.915em)", fontSize: "6.2vw" }}
+        >
+          {intro.titleTop}
+        </span>
+        <span
+          className="absolute whitespace-nowrap z-20"
+          style={{ left: "53.4vw", top: "calc(91vh - 0.915em)", fontSize: "6.2vw" }}
+        >
+          {intro.titleBottom}
+        </span>
+      </h2>
+
       <IntroSubtitle subtitle={intro.subtitle} slideFocus={slideFocus} />
+    </article>
+  );
+}
+
+type Box = { left: string; top: string; width: string; height: string };
+
+function PlacedImage({
+  moment,
+  box,
+  slideFocus,
+  revealStart,
+}: {
+  moment: DayMoment;
+  box: Box;
+  slideFocus: MotionValue<number>;
+  revealStart: number;
+}) {
+  return (
+    <div className="absolute" style={box}>
+      <RevealImage
+        src={moment.image.src}
+        alt={moment.image.alt}
+        className="h-full w-full rounded-[2px]"
+        progress={slideFocus}
+        revealStart={revealStart}
+        revealEnd={revealStart + 0.3}
+        sizes={box.width}
+      />
+    </div>
+  );
+}
+
+/** Frame 3 del mockup: imagen a sangre + cuadrada arriba + textos abajo. */
+function BleedLayout({
+  slideId,
+  moments,
+  slideFocus,
+  index,
+}: {
+  slideId: string;
+  moments: DayMoment[];
+  slideFocus: MotionValue<number>;
+  index: number;
+}) {
+  const [square, bleed] = moments;
+  return (
+    <article
+      className="relative z-10 shrink-0 w-screen h-full overflow-hidden"
+      aria-label={slideId}
+    >
+      <SlideDivider hidden={index === 0} />
+      <PlacedImage
+        moment={bleed}
+        box={{ left: "7.3vw", top: "0vh", width: "36.3vw", height: "100vh" }}
+        slideFocus={slideFocus}
+        revealStart={0.15}
+      />
+      <PlacedImage
+        moment={square}
+        box={{ left: "46.4vw", top: "5.3vh", width: "25.1vw", height: "49.3vh" }}
+        slideFocus={slideFocus}
+        revealStart={0.3}
+      />
+      <div
+        className="absolute flex gap-[4vw]"
+        style={{ left: "46.4vw", top: "64vh" }}
+      >
+        {moments.map((moment, i) => (
+          <MomentText
+            key={moment.title}
+            moment={moment}
+            slideFocus={slideFocus}
+            startAt={0.4 + i * 0.1}
+          />
+        ))}
+      </div>
+    </article>
+  );
+}
+
+/** Frame 2 del mockup: vertical + cuadrada (inicio del trazo 2) + textos. */
+function SplitLayout({
+  slideId,
+  moments,
+  slideFocus,
+  index,
+}: {
+  slideId: string;
+  moments: DayMoment[];
+  slideFocus: MotionValue<number>;
+  index: number;
+}) {
+  const [portrait, square] = moments;
+  return (
+    <article
+      className="relative z-10 shrink-0 w-screen h-full overflow-hidden"
+      aria-label={slideId}
+    >
+      <SlideDivider hidden={index === 0} />
+      <PlacedImage
+        moment={portrait}
+        box={{ left: "5.6vw", top: "11.1vh", width: "28.6vw", height: "77.9vh" }}
+        slideFocus={slideFocus}
+        revealStart={0.15}
+      />
+      <PlacedImage
+        moment={square}
+        box={{ left: "36.5vw", top: "33.9vh", width: "25.2vw", height: "49.5vh" }}
+        slideFocus={slideFocus}
+        revealStart={0.3}
+      />
+      <div
+        className="absolute flex flex-col gap-8"
+        style={{ left: "66.1vw", top: "50vh" }}
+      >
+        {moments.map((moment, i) => (
+          <MomentText
+            key={moment.title}
+            moment={moment}
+            slideFocus={slideFocus}
+            startAt={0.4 + i * 0.1}
+          />
+        ))}
+      </div>
+    </article>
+  );
+}
+
+/** Un solo momento: imagen alta a la izquierda (destino del avión del
+ *  trazo 2, ver LINE_2_LAYOUT) y texto a la derecha. */
+function SingleLayout({
+  slideId,
+  moments,
+  slideFocus,
+  index,
+}: {
+  slideId: string;
+  moments: DayMoment[];
+  slideFocus: MotionValue<number>;
+  index: number;
+}) {
+  const [moment] = moments;
+  return (
+    <article
+      className="relative z-10 shrink-0 w-screen h-full overflow-hidden"
+      aria-label={slideId}
+    >
+      <SlideDivider hidden={index === 0} />
+      <PlacedImage
+        moment={moment}
+        box={{ left: "10vw", top: "7.5vh", width: "32vw", height: "85vh" }}
+        slideFocus={slideFocus}
+        revealStart={0.15}
+      />
+      <div className="absolute" style={{ left: "47vw", top: "62vh" }}>
+        <MomentText moment={moment} slideFocus={slideFocus} startAt={0.4} />
+      </div>
     </article>
   );
 }
@@ -200,7 +356,7 @@ function MomentosLayout({
 }) {
   return (
     <article
-      className="relative shrink-0 w-screen h-full overflow-hidden"
+      className="relative z-10 shrink-0 w-screen h-full overflow-hidden"
       aria-label={slideId}
     >
       <SlideDivider hidden={index === 0} />
@@ -269,10 +425,21 @@ export default function Slide({
 
   if (slide.type === "intro") {
     return (
-      <IntroLayout
-        intro={slide.intro}
+      <IntroLayout intro={slide.intro} slideFocus={slideFocus} index={index} />
+    );
+  }
+
+  if (slide.layout) {
+    const Layout = {
+      bleed: BleedLayout,
+      split: SplitLayout,
+      single: SingleLayout,
+    }[slide.layout];
+    return (
+      <Layout
+        slideId={slide.id}
+        moments={slide.moments}
         slideFocus={slideFocus}
-        parallax={parallax}
         index={index}
       />
     );

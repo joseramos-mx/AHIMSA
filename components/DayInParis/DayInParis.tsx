@@ -4,17 +4,25 @@ import { useLayoutEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
   type MotionValue,
 } from "motion/react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { SLIDES, type DaySlide } from "@/lib/day-in-paris";
 import Slide from "./Slide";
 import DrawnPath from "./DrawnPath";
 
 const SLIDES_COUNT = SLIDES.length;
+
+/**
+ * Scroll extra (en vh) al final de la sección durante el cual el track ya
+ * terminó su recorrido horizontal pero el sticky sigue fijo. Le da tiempo
+ * al spring de asentarse para que la página no empiece a bajar mientras el
+ * último slide todavía se está deslizando.
+ */
+const END_HOLD_VH = 80;
 
 /**
  * Hook por slide: deriva un "focus" 0..1 que vale 0 cuando el slide
@@ -62,11 +70,21 @@ export default function DayInParis() {
     offset: ["start start", "end end"],
   });
 
-  const smooth = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+  // El recorrido horizontal se completa al terminar los (N-1)×100vh de
+  // scroll; el resto (END_HOLD_VH) es pausa con el track ya al final.
+  const horizontalEnd =
+    ((SLIDES_COUNT - 1) * 100) / ((SLIDES_COUNT - 1) * 100 + END_HOLD_VH);
+  const horizontal = useTransform(scrollYProgress, [0, horizontalEnd], [0, 1], {
+    clamp: true,
+  });
+
+  // Spring corto (τ ≈ 0.13s): suaviza el scroll sin quedarse atrás, para
+  // que el track llegue al final dentro de la pausa END_HOLD_VH.
+  const smooth = useSpring(horizontal, {
+    stiffness: 300,
+    damping: 40,
     restDelta: 0.0001,
-    mass: 0.6,
+    mass: 0.4,
   });
 
   const staticProgress = useMotionValue(1);
@@ -140,7 +158,7 @@ export default function DayInParis() {
       ref={sectionRef}
       id="un-dia"
       className="relative bg-cream text-ink"
-      style={{ height: `${SLIDES_COUNT * 100}vh` }}
+      style={{ height: `calc(${SLIDES_COUNT * 100}vh + ${END_HOLD_VH}vh)` }}
       aria-label="Un día en París con Ahimsa"
     >
       <div
