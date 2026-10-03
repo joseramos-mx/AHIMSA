@@ -20,3 +20,8 @@ export const CTA = {
   label: "Cotiza tu viaje",
   href: "/contacto",
 };
+
+/** Fuera de la home, los anclas (#seccion) deben llevar a /#seccion. */
+export function navHref(href: string, pathname: string | null) {
+  return href.startsWith("#") && pathname !== "/" ? `/${href}` : href;
+}

@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Figtree } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/Footer/Footer";
+import FooterCurtain from "@/components/Footer/FooterCurtain";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -36,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${playfair.variable} ${figtree.variable}`}>
       <body className="font-figtree bg-cream text-ink antialiased">
-        {children}
+        <FooterCurtain footer={<Footer />}>{children}</FooterCurtain>
       </body>
     </html>
   );

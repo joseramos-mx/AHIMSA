@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
-import { CTA, NAV_LINKS } from "@/lib/nav";
+import { CTA, NAV_LINKS, navHref } from "@/lib/nav";
 
 type MobileMenuProps = {
   open: boolean;
@@ -13,6 +14,7 @@ type MobileMenuProps = {
 
 export default function MobileMenu({ open, onClose }: MobileMenuProps) {
   const reduceMotion = useReducedMotion();
+  const pathname = usePathname();
 
   // Lock body scroll + handle Escape while open.
   useEffect(() => {
@@ -91,7 +93,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
                 }}
               >
                 <Link
-                  href={link.href}
+                  href={navHref(link.href, pathname)}
                   onClick={onClose}
                   className="font-playfair text-[32px] leading-tight text-cream hover:text-accent transition-colors"
                 >

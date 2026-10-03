@@ -1,20 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   motion,
+  useMotionValue,
   useMotionValueEvent,
   useTransform,
   type MotionValue,
 } from "motion/react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
-import { NAV_LINKS, CTA } from "@/lib/nav";
+import { NAV_LINKS, CTA, navHref } from "@/lib/nav";
 import MobileMenu from "./MobileMenu";
 
 type HeaderProps = {
-  progress: MotionValue<number>;
-  rawProgress: MotionValue<number>;
+  /** Progreso del scroll del Hero. Sin él (páginas sin Hero) el header se
+   *  muestra directo en su estado final: logo chico y fondo cream. */
+  progress?: MotionValue<number>;
+  rawProgress?: MotionValue<number>;
 };
 
 type NavItemProps = {
@@ -88,7 +92,12 @@ function HamburgerIcon() {
   );
 }
 
-export default function Header({ progress, rawProgress }: HeaderProps) {
+export default function Header(props: HeaderProps) {
+  const fallback = useMotionValue(1);
+  const progress = props.progress ?? fallback;
+  const rawProgress = props.rawProgress ?? fallback;
+  const isStatic = !props.progress;
+  const pathname = usePathname();
   const reduceMotion = useReducedMotion();
   const logoContainerRef = useRef<HTMLDivElement>(null);
   const [m, setM] = useState({ bigScale: 1, bigX: 0, bigY: 0 });
@@ -150,9 +159,9 @@ export default function Header({ progress, rawProgress }: HeaderProps) {
   const logoX = useTransform(progress, [0, 0.35], [m.bigX, 0]);
   const logoY = useTransform(progress, [0, 0.35], [m.bigY, 0]);
 
-  // Reduced motion: skip transforms, render the final state (small logo,
-  // visible nav, cream header).
-  if (reduceMotion) {
+  // Reduced motion o página sin Hero: skip transforms, render the final
+  // state (small logo, visible nav, cream header).
+  if (reduceMotion || isStatic) {
     return (
       <>
         <header className="fixed inset-x-0 top-0 z-50 bg-cream/85 backdrop-blur-md border-b border-ink/10">
@@ -171,7 +180,7 @@ export default function Header({ progress, rawProgress }: HeaderProps) {
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
-                  href={link.href}
+                  href={navHref(link.href, pathname)}
                   className="font-figtree text-sm text-ink hover:text-accent transition-colors"
                 >
                   {link.label}
