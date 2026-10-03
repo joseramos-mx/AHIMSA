@@ -1,5 +1,11 @@
+export type NicheSlug =
+  | "family-europe"
+  | "magic-families"
+  | "premium-resorts"
+  | "legacy-journeys";
+
 export type Niche = {
-  slug: string;
+  slug: NicheSlug;
   name: string;
   description: string;
   image: string;

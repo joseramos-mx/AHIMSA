@@ -1,3 +1,5 @@
+import { hasPublishedTestimonials } from "./testimonials";
+
 export type NavLink = {
   label: string;
   href: string;
@@ -9,7 +11,10 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Cómo trabajamos", href: "#como-trabajamos" },
   { label: "Testimonios", href: "#testimonios" },
   { label: "Empresas", href: "#empresas" },
-];
+  // Sin testimonios publicados la sección no existe: se quita su link.
+].filter(
+  (link) => link.href !== "#testimonios" || hasPublishedTestimonials()
+);
 
 export const CTA = {
   label: "Cotiza tu viaje",
