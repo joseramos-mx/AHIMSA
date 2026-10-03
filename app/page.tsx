@@ -10,6 +10,7 @@ import DayInParisResponsive from "@/components/DayInParis/DayInParisResponsive";
 import CallToAction from "@/components/CallToAction";
 import HowWeWork from "@/components/HowWeWork/HowWeWork";
 import Testimonials from "@/components/Testimonials/Testimonials";
+import Services from "@/components/Services/Services";
 
 export default function Page() {
   const heroRef = useRef<HTMLElement | null>(null);
@@ -40,6 +41,7 @@ export default function Page() {
       <CallToAction />
       <HowWeWork />
       <Testimonials />
+      <Services />
     </main>
   );
 }
