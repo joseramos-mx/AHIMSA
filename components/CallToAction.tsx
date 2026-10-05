@@ -23,7 +23,64 @@ const BUTTON_BASE = `
   focus-visible:outline-offset-[3px] focus-visible:outline-white
 `;
 
-export default function CallToAction() {
+type CtaButton = {
+  label: string;
+  href: string;
+  /** Abre en otra pestaña (WhatsApp) y lo anuncia a lectores de pantalla. */
+  external?: boolean;
+};
+
+type CallToActionProps = {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  /** Botón sólido (blanco). */
+  primary?: CtaButton;
+  /** Botón de contorno. */
+  secondary?: CtaButton;
+  /** Texto pequeño debajo de los botones (p. ej. un aviso legal). */
+  footnote?: string;
+  backgroundSrc?: string | null;
+};
+
+function CtaLink({ button, className }: { button: CtaButton; className: string }) {
+  if (button.external) {
+    return (
+      <a
+        href={button.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {button.label}
+        <span className="sr-only"> (se abre en una pestaña nueva)</span>
+      </a>
+    );
+  }
+  return (
+    <Link href={button.href} className={className}>
+      {button.label}
+    </Link>
+  );
+}
+
+/** Sección de cierre con foto de fondo. Sin props muestra el CTA de la
+ *  landing (#empecemos); /unete-a-mi-equipo la reutiliza con sus textos. */
+export default function CallToAction({
+  id = "empecemos",
+  eyebrow = "Empecemos",
+  title = "Diseñemos juntos el viaje que tu familia va a recordar siempre.",
+  subtitle = "Cuéntame tu idea, tus fechas y con quién viajas. Yo me encargo del resto.",
+  primary = { label: "Cotiza tu viaje", href: "/contacto" },
+  secondary = {
+    label: "Escríbeme por WhatsApp",
+    href: WHATSAPP_URL,
+    external: true,
+  },
+  footnote,
+  backgroundSrc = BG_SRC,
+}: CallToActionProps) {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -43,8 +100,8 @@ export default function CallToAction() {
   return (
     <section
       ref={sectionRef}
-      id="empecemos"
-      aria-labelledby="empecemos-title"
+      id={id}
+      aria-labelledby={`${id}-title`}
       className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-ink text-white"
     >
       {/* Fondo: 20% más alto que la sección (-10% arriba y abajo). Con y de
@@ -54,9 +111,9 @@ export default function CallToAction() {
         className="absolute inset-x-0 -top-[10%] -bottom-[10%] -z-10 will-change-transform"
         style={reduce ? undefined : { y, scale }}
       >
-        {BG_SRC ? (
+        {backgroundSrc ? (
           <Image
-            src={BG_SRC}
+            src={backgroundSrc}
             alt=""
             fill
             sizes="100vw"
@@ -80,52 +137,59 @@ export default function CallToAction() {
       />
 
       <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center px-6 py-24 text-center md:px-10">
-        <Reveal
-          as="p"
-          distance={0}
-          className="font-figtree text-[13px] font-medium uppercase tracking-[0.2em] text-white/85"
-        >
-          Empecemos
-        </Reveal>
+        {eyebrow && (
+          <Reveal
+            as="p"
+            distance={0}
+            className="font-figtree text-[13px] font-medium uppercase tracking-[0.2em] text-white/85"
+          >
+            {eyebrow}
+          </Reveal>
+        )}
 
         <SplitHeading
-          id="empecemos-title"
+          id={`${id}-title`}
           delay={0.15}
-          text="Diseñemos juntos el viaje que tu familia va a recordar siempre."
+          text={title}
           className="mt-6 font-fraunces font-light text-[38px] leading-[1.05] text-white md:text-[56px] lg:text-[80px]"
         />
 
-        <Reveal
-          as="p"
-          delay={0.6}
-          distance={16}
-          className="mt-6 max-w-[560px] font-figtree text-[18px] leading-[1.6] text-white/85 md:mt-8"
-        >
-          Cuéntame tu idea, tus fechas y con quién viajas. Yo me encargo del
-          resto.
-        </Reveal>
+        {subtitle && (
+          <Reveal
+            as="p"
+            delay={0.6}
+            distance={16}
+            className="mt-6 max-w-[560px] font-figtree text-[18px] leading-[1.6] text-white/85 md:mt-8"
+          >
+            {subtitle}
+          </Reveal>
+        )}
 
         <Reveal
           delay={0.75}
           distance={16}
           className="mt-10 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row"
         >
-          <Link
-            href="/contacto"
+          <CtaLink
+            button={primary}
             className={`${BUTTON_BASE} bg-white text-ink hover:bg-cream`}
-          >
-            Cotiza tu viaje
-          </Link>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          />
+          <CtaLink
+            button={secondary}
             className={`${BUTTON_BASE} border border-white text-white hover:bg-white hover:text-ink`}
-          >
-            Escríbeme por WhatsApp
-            <span className="sr-only"> (se abre en una pestaña nueva)</span>
-          </a>
+          />
         </Reveal>
+
+        {footnote && (
+          <Reveal
+            as="p"
+            delay={0.85}
+            distance={0}
+            className="mt-8 max-w-[480px] font-figtree text-[13px] leading-[1.5] text-white/75"
+          >
+            {footnote}
+          </Reveal>
+        )}
       </div>
     </section>
   );

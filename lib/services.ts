@@ -1,4 +1,4 @@
-import type { TripType } from "./trip-types";
+import type { TripType } from "./lead-types";
 
 export type Service = {
   /** También es el "tipo" que recibe /contacto. */
@@ -15,8 +15,8 @@ export type Service = {
  * IMPORTANTE: las imágenes deben mostrar destinos genéricos, sin logos de
  * navieras, artistas, equipos ni ligas deportivas.
  *
- * Para un servicio nuevo: agrega su slug a TripType en lib/trip-types.ts
- * (con su etiqueta en TRIP_TYPES), amplía el tipo `slug` de arriba y añade
+ * Para un servicio nuevo: agrega su slug a TripType en lib/lead-types.ts
+ * (con su etiqueta en LEAD_TYPES), amplía el tipo `slug` de arriba y añade
  * aquí el objeto con su imagen en /public/media/services/.
  */
 export const SERVICES: Service[] = [

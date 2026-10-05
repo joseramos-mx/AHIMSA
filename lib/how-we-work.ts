@@ -2,6 +2,8 @@
  * Contenido de la sección "Cómo trabajamos" (#como-trabajamos).
  */
 
+import { PROVIDERS_COUNT } from "./join";
+
 /** Nombre de la fundadora. Se usa en el título y en el alt de la foto. */
 export const FOUNDER_NAME = "Fátima";
 
@@ -11,12 +13,12 @@ export const FOUNDER_PHOTO = "/media/about/foto-perfil.jpg";
 
 // TODO: texto provisional — reemplazar por la historia real de la fundadora.
 export const ABOUT_TEXT =
-  "Llevo años recorriendo Europa y planeando viajes para familias que quieren vivirla sin estrés. Fundé Ahimsa con una idea simple: que cada viaje se diseñe alrededor de las personas que lo van a vivir, no al revés. Trabajo con más de 130 proveedores internacionales y una red de agentes en todo el mundo, pero cada itinerario lo armo yo, a mano.";
+  `Llevo años recorriendo Europa y planeando viajes para familias que quieren vivirla sin estrés. Fundé Ahimsa con una idea simple: que cada viaje se diseñe alrededor de las personas que lo van a vivir, no al revés. Trabajo con más de ${PROVIDERS_COUNT} proveedores internacionales y una red de agentes en todo el mundo, pero cada itinerario lo armo yo, a mano.`;
 
 /** Datos cortos debajo de la historia. */
 export const ABOUT_FACTS = [
   "Europa es mi especialidad",
-  "Más de 130 proveedores",
+  `Más de ${PROVIDERS_COUNT} proveedores`,
   "Te acompaño en todo el viaje",
 ];
 

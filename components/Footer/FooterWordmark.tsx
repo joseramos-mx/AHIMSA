@@ -39,12 +39,22 @@ export default function FooterWordmark() {
       const hit = document.elementFromPoint(r.left + r.width / 2, y);
       if (hit && box.contains(hit)) setInView(true);
     };
+    // Tras un salto (tecla Fin, ancla) el único evento de scroll puede
+    // llegar antes de que la página se acomode: se vuelve a revisar cuando
+    // el scroll se detiene.
+    let settle: ReturnType<typeof setTimeout> | undefined;
+    const onScroll = () => {
+      check();
+      clearTimeout(settle);
+      settle = setTimeout(check, 200);
+    };
     check();
-    window.addEventListener("scroll", check, { passive: true });
-    window.addEventListener("resize", check);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      window.removeEventListener("scroll", check);
-      window.removeEventListener("resize", check);
+      clearTimeout(settle);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, [inView]);
 

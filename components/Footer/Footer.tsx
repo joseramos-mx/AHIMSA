@@ -9,8 +9,11 @@ import {
   CONTACT_EMAIL,
   CONTACT_HOURS,
   FOOTER_CLOSING,
-  INSTAGRAM,
+  FOOTER_TAGLINE,
+  JOIN_LINK,
+  SOCIAL_LINKS,
   getVisibleCredentials,
+  isRealUrl,
 } from "@/lib/footer";
 import SplitHeading from "@/components/SplitHeading";
 import AnimatedButton from "@/components/ui/AnimatedButton";
@@ -26,7 +29,7 @@ function Column({ title, children }: { title: string; children: ReactNode }) {
       <h2 className="font-figtree text-[12px] font-medium uppercase tracking-[0.2em] text-cream/55">
         {title}
       </h2>
-      <ul className="mt-5 flex flex-col items-start gap-2.5">{children}</ul>
+      <ul className="mt-5 flex flex-col items-start gap-2">{children}</ul>
     </div>
   );
 }
@@ -45,15 +48,22 @@ export default function Footer() {
             text={FOOTER_CLOSING.title}
             className="max-w-[640px] font-fraunces text-[30px] font-light leading-[1.1] text-cream lg:text-[44px]"
           />
-          <AnimatedButton href={FOOTER_CLOSING.cta.href} variant="light">
-            {FOOTER_CLOSING.cta.label}
-          </AnimatedButton>
+          {/* El tagline va bajo el botón: en desktop cabe junto al título
+              sin sumar altura (el telón necesita que el footer quepa). */}
+          <div className="flex flex-col items-start gap-5 lg:items-end">
+            <AnimatedButton href={FOOTER_CLOSING.cta.href} variant="light">
+              {FOOTER_CLOSING.cta.label}
+            </AnimatedButton>
+            <p className="font-figtree text-[13px] uppercase tracking-[0.35em] text-cream/60">
+              {FOOTER_TAGLINE}
+            </p>
+          </div>
         </div>
 
         {/* 2. Columnas */}
         <nav
           aria-label="Pie de página"
-          className="grid grid-cols-1 gap-12 py-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-10"
+          className="grid grid-cols-1 gap-12 py-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-10 lg:py-10"
         >
           <div className="lg:col-span-3">
             <Column title="Explora">
@@ -64,6 +74,9 @@ export default function Footer() {
                   </FooterLink>
                 </li>
               ))}
+              <li>
+                <FooterLink href={JOIN_LINK.href}>{JOIN_LINK.label}</FooterLink>
+              </li>
             </Column>
           </div>
 
@@ -79,12 +92,29 @@ export default function Footer() {
                   {CONTACT_EMAIL}
                 </FooterLink>
               </li>
-              <li>
-                <FooterLink href={INSTAGRAM.href} external>
-                  <span className="sr-only">Instagram </span>
-                  {INSTAGRAM.handle}
-                </FooterLink>
-              </li>
+              {SOCIAL_LINKS.map((social) =>
+                isRealUrl(social.href) ? (
+                  <li key={social.network}>
+                    <FooterLink href={social.href} external>
+                      {social.network}
+                      <span className="sr-only"> {social.handle}</span>
+                    </FooterLink>
+                  </li>
+                ) : (
+                  // URL pendiente: solo en desarrollo, marcada como borrador.
+                  !IS_PRODUCTION && (
+                    <li
+                      key={social.network}
+                      className="font-figtree text-[16px] text-cream/85"
+                    >
+                      {social.network}
+                      <span className="ml-2 rounded-[2px] bg-cream px-1.5 py-0.5 align-middle text-[10px] font-medium uppercase tracking-[0.12em] text-ink">
+                        Borrador
+                      </span>
+                    </li>
+                  )
+                )
+              )}
               <li className="font-figtree text-[16px] text-cream/85">
                 {CONTACT_HOURS}
               </li>

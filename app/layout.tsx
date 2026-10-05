@@ -3,6 +3,7 @@ import { Fraunces, Figtree } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer/Footer";
 import FooterCurtain from "@/components/Footer/FooterCurtain";
+import { SITE_URL } from "@/lib/site";
 
 // Fuente variable (todos los pesos; el sitio usa light/300 en la serif) con
 // eje de tamaño óptico (opsz), que ajusta el dibujo al tamaño del texto.
@@ -21,6 +22,8 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
+  // Base para las URLs absolutas de Open Graph, canonical y sitemap.
+  metadataBase: new URL(SITE_URL),
   title: "AHIMSA — Viajes a medida en Europa",
   description:
     "Agencia de viajes especializada en Europa bespoke. Itinerarios a la medida, los mejores hoteles y acompañamiento antes, durante y después de tu viaje.",

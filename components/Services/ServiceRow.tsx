@@ -1,5 +1,5 @@
 import { Link000 } from "@/components/ui/skiper-ui/skiper40";
-import { contactHref } from "@/lib/trip-types";
+import { contactHref } from "@/lib/lead-types";
 import type { Service } from "@/lib/services";
 import { cn } from "@/lib/utils";
 

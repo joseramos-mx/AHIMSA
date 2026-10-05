@@ -35,6 +35,8 @@ type RevealImageProps = {
    * La imagen se agranda un 5% arriba y abajo para no dejar huecos.
    */
   parallaxY?: MotionValue<string>;
+  /** Carga prioritaria (imagen principal visible al cargar la página). */
+  priority?: boolean;
 };
 
 /**
@@ -52,6 +54,7 @@ export default function RevealImage({
   revealEnd = 0.5,
   parallaxX,
   parallaxY,
+  priority = false,
 }: RevealImageProps) {
   const [failed, setFailed] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -112,6 +115,7 @@ export default function RevealImage({
             alt={alt}
             fill
             sizes={sizes}
+            priority={priority}
             className="object-cover"
             onError={() => setFailed(true)}
           />

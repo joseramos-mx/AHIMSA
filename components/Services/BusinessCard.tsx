@@ -2,7 +2,7 @@ import RevealImage from "@/components/RevealImage";
 import Reveal from "@/components/Reveal";
 import AnimatedButton from "@/components/ui/AnimatedButton";
 import { BUSINESS_FEATURES, BUSINESS_IMAGE } from "@/lib/services";
-import { contactHref } from "@/lib/trip-types";
+import { contactHref } from "@/lib/lead-types";
 
 /** Tarjeta "Para empresas". La imagen es opcional (BUSINESS_IMAGE). */
 export default function BusinessCard() {
