@@ -11,8 +11,9 @@ const INITIAL_FONT = "21vw";
 /**
  * "AHIMSA" a todo lo ancho, como sello de cierre. El font-size se calcula
  * midiendo el texto (tras cargar las fuentes y en cada resize) para que
- * ocupe el ancho disponible sin desbordar. Interlineado 0.8: la línea
- * recorta un poco la base de las letras contra el borde inferior. Cada
+ * ocupe el ancho disponible sin desbordar. Interlineado 0.7 (calculado para
+ * las métricas de Fraunces): la línea recorta un poco la base de las
+ * letras contra el borde inferior. Cada
  * letra sube de 100% a 0% en cascada al entrar en pantalla, una vez.
  */
 export default function FooterWordmark() {
@@ -84,7 +85,7 @@ export default function FooterWordmark() {
     >
       <span
         ref={textRef}
-        className="flex w-max whitespace-nowrap font-playfair font-normal leading-[0.8] text-cream"
+        className="flex w-max whitespace-nowrap font-fraunces font-light leading-[0.7] text-cream [font-variation-settings:'opsz'_144]"
         style={{ fontSize }}
       >
         {WORD.split("").map((letter, i) => (

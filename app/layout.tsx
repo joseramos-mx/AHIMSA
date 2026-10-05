@@ -1,13 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Figtree } from "next/font/google";
+import { Fraunces, Figtree } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer/Footer";
 import FooterCurtain from "@/components/Footer/FooterCurtain";
 
-const playfair = Playfair_Display({
+// Fuente variable (todos los pesos; el sitio usa light/300 en la serif) con
+// eje de tamaño óptico (opsz), que ajusta el dibujo al tamaño del texto.
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-playfair",
+  axes: ["opsz"],
+  variable: "--font-fraunces",
   display: "swap",
 });
 
@@ -36,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${playfair.variable} ${figtree.variable}`}>
+    <html lang="es" className={`${fraunces.variable} ${figtree.variable}`}>
       <body className="font-figtree bg-cream text-ink antialiased">
         <FooterCurtain footer={<Footer />}>{children}</FooterCurtain>
       </body>

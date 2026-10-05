@@ -169,7 +169,7 @@ export default function Header(props: HeaderProps) {
             <Link
               href="/"
               aria-label="AHIMSA, inicio"
-              className="font-playfair text-base md:text-xl text-ink leading-none"
+              className="font-fraunces font-light [font-variation-settings:'opsz'_144] text-base md:text-xl text-ink leading-none"
             >
               AHIMSA
             </Link>
@@ -218,7 +218,9 @@ export default function Header(props: HeaderProps) {
           data-[at-end]:bg-cream/85 data-[at-end]:backdrop-blur-md data-[at-end]:border-ink/10"
       >
         <div className="flex items-center justify-between px-5 md:px-10 h-16">
-          {/* Logo: one visible element (the motion.a). The invisible span
+          {/* opsz 144: el logo se escala con transform desde ~20px; sin fijar
+              el tamaño óptico se vería el corte de texto chico de Fraunces.
+              Logo: one visible element (the motion.a). The invisible span
               reserves layout space so getBoundingClientRect gives us the
               natural (post-animation) position for the FLIP math. */}
           <div
@@ -227,14 +229,14 @@ export default function Header(props: HeaderProps) {
           >
             <span
               aria-hidden="true"
-              className="invisible font-playfair text-base md:text-xl leading-none select-none"
+              className="invisible font-fraunces font-light [font-variation-settings:'opsz'_144] text-base md:text-xl leading-none select-none"
             >
               AHIMSA
             </span>
             <motion.a
               href="/"
               aria-label="AHIMSA, inicio"
-              className={`absolute left-0 top-0 origin-top-left font-playfair text-base md:text-xl leading-none select-none will-change-transform transition-colors duration-300 ${
+              className={`absolute left-0 top-0 origin-top-left font-fraunces font-light [font-variation-settings:'opsz'_144] text-base md:text-xl leading-none select-none will-change-transform transition-colors duration-300 ${
                 atEnd ? "text-ink" : "text-white"
               }`}
               style={{

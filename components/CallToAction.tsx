@@ -92,7 +92,7 @@ export default function CallToAction() {
           id="empecemos-title"
           delay={0.15}
           text="Diseñemos juntos el viaje que tu familia va a recordar siempre."
-          className="mt-6 font-playfair font-normal text-[38px] leading-[1.05] text-white md:text-[56px] lg:text-[80px]"
+          className="mt-6 font-fraunces font-light text-[38px] leading-[1.05] text-white md:text-[56px] lg:text-[80px]"
         />
 
         <Reveal

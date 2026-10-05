@@ -12,63 +12,91 @@ import type { NicheSlug } from "./niches";
 
 export type Testimonial = {
   id: string;
-  /** Texto del cliente, 2 a 4 líneas. */
+  /** Texto del cliente, tal como lo escribió (solo se corrige ortografía). */
   quote: string;
+  /** Nombre o usuario con el que el cliente aceptó aparecer. */
   name: string;
-  city: string;
-  destination: string;
-  nicheSlug: NicheSlug;
-  /** Foto 4:5 en /public/media/testimonials/ (mín. ~1200px de alto). */
-  image: string;
+  /** Opcionales: se muestran solo si se conocen. No inventarlos. */
+  city?: string;
+  destination?: string;
+  nicheSlug?: NicheSlug;
+  /** De dónde viene (p. ej. "Instagram"). */
+  source?: string;
+  /** Foto 4:5 en /public/media/testimonials/ (mín. ~1200px de alto). Sin
+   *  foto, el slide muestra un panel con una comilla decorativa. */
+  image?: string;
   /** Ej. "Ana y su familia frente al Coliseo en Roma". */
-  imageAlt: string;
+  imageAlt?: string;
   /** true solo cuando el cliente ya dio permiso y el texto es definitivo. */
   published: boolean;
 };
 
+/*
+ * Transcritos de historias de Instagram de clientes (octubre 2026). Ajustes
+ * permitidos aplicados: acentos y signos de apertura, "Amisha" → "Ahimsa",
+ * sin emojis; @ahimsa.travel escrito como "Ahimsa Travel" o omitido donde
+ * solo era la etiqueta del agradecimiento. Antes de publicar:
+ *  - confirmar el permiso de cada cliente (y cómo quiere aparecer su
+ *    nombre: hoy dice su usuario de Instagram),
+ *  - los que dicen "[Nombre]" venían sin autor visible en la captura,
+ *  - el de lorena.romero menciona a @pawismn (otra persona): confirmar.
+ */
 export const TESTIMONIALS: Testimonial[] = [
   {
-    id: "placeholder-1",
-    quote: "[Testimonio real del cliente, 2 a 4 líneas]",
+    id: "ig-paris-familia",
+    quote:
+      "@fatu.ab es sumamente profesional y atenta, estuvo al pendiente de nosotros antes y durante todo nuestro viaje en París. Sin duda volveremos a viajar con ellos.",
     name: "[Nombre]",
-    city: "[Ciudad]",
-    destination: "[Destino]",
+    destination: "París",
     nicheSlug: "family-europe",
-    image: "/media/testimonials/testimonio-1.jpg",
-    imageAlt: "[Nombre] y su familia frente al Coliseo en Roma",
+    source: "Instagram",
     published: false,
   },
   {
-    id: "placeholder-2",
-    quote: "[Testimonio real del cliente, 2 a 4 líneas]",
+    id: "ig-viaje-familiar",
+    quote:
+      "Excelente experiencia con Ahimsa Travel. Organizó todo nuestro viaje familiar a la perfección, desde los vuelos, hospedajes, traslados y los lugares que queríamos conocer. No tuvimos que preocuparnos por nada.",
     name: "[Nombre]",
-    city: "[Ciudad]",
-    destination: "[Destino]",
-    nicheSlug: "family-europe",
-    image: "/media/testimonials/testimonio-2.jpg",
-    imageAlt: "[Nombre] y su familia paseando junto al Sena en París",
+    source: "Instagram",
     published: false,
   },
   {
-    id: "placeholder-3",
-    quote: "[Testimonio real del cliente, 2 a 4 líneas]",
-    name: "[Nombre]",
-    city: "[Ciudad]",
-    destination: "[Destino]",
-    nicheSlug: "magic-families",
-    image: "/media/testimonials/testimonio-3.jpg",
-    imageAlt: "[Nombre] y sus hijos en un parque de atracciones en Orlando",
+    id: "ig-lorena-romero",
+    quote:
+      "Viajar con Ahimsa Travel fue la mejor decisión, Faty se encargó de absolutamente todo, mientras yo solo me dediqué a disfrutar, descansar y ser bonita junto con @pawismn. Gracias por hacer mis vacaciones tan fáciles y perfectas. ¡Súper recomendados!",
+    name: "@lorena.romero.5832343",
+    source: "Instagram",
     published: false,
   },
   {
-    id: "placeholder-4",
-    quote: "[Testimonio real del cliente, 2 a 4 líneas]",
+    id: "ig-dayanjair",
+    quote:
+      "Para viajecitos cool les recomiendo este perfil. Siempre nos ayudan a encontrar las mejores opciones. Súper de confianza.",
+    name: "@dayanjair",
+    source: "Instagram",
+    published: false,
+  },
+  {
+    id: "ig-san-dymart",
+    quote: "¡Recomendado! Persona de súper confianza y experta.",
+    name: "@san_dymart",
+    source: "Instagram",
+    published: false,
+  },
+  {
+    id: "ig-jessii-paam",
+    quote:
+      "Gracias por todas las atenciones y recomendaciones… disfrutamos mucho este viaje.",
+    name: "@jessii_paam",
+    source: "Instagram",
+    published: false,
+  },
+  {
+    id: "ig-mensaje-regreso",
+    quote:
+      "Mil gracias por todo el apoyo y asesoría. Todos muy felices con el servicio que ofreces con tu agencia.",
     name: "[Nombre]",
-    city: "[Ciudad]",
-    destination: "[Destino]",
-    nicheSlug: "legacy-journeys",
-    image: "/media/testimonials/testimonio-4.jpg",
-    imageAlt: "[Nombre] y su pareja al atardecer en Santorini",
+    source: "mensaje directo",
     published: false,
   },
 ];

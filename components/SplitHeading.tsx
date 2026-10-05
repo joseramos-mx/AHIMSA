@@ -111,7 +111,7 @@ export default function SplitHeading({
   } else {
     content = lines.map((line, i) => (
       // El padding/margin negativo deja espacio a ascendentes y
-      // descendentes de Playfair dentro del overflow hidden.
+      // descendentes de la serif dentro del overflow hidden.
       <span
         key={`${i}-${line.join(" ")}`}
         aria-hidden="true"

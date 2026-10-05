@@ -79,12 +79,12 @@ export default function AvisoDePrivacidadPage() {
       <Header />
       <main className="bg-cream px-6 pb-24 pt-32 text-ink md:px-10 lg:pb-32 lg:pt-40">
         <article className="mx-auto max-w-[720px] font-figtree text-[17px] leading-[1.7]">
-          <h1 className="font-playfair text-[40px] font-normal leading-[1.1] lg:text-[56px]">
+          <h1 className="font-fraunces text-[40px] font-light leading-[1.1] lg:text-[56px]">
             Aviso de privacidad
           </h1>
           {SECTIONS.map((section) => (
             <section key={section.title} className="mt-12">
-              <h2 className="font-playfair text-[26px] font-normal leading-tight lg:text-[30px]">
+              <h2 className="font-fraunces text-[26px] font-light leading-tight lg:text-[30px]">
                 {section.title}
               </h2>
               {section.body.map((p) => (

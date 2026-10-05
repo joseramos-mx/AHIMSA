@@ -35,7 +35,7 @@ export default function BusinessCard() {
         as="h2"
         delay={0.25}
         distance={16}
-        className="mt-5 font-playfair text-[30px] font-normal leading-[1.15] lg:text-[40px]"
+        className="mt-5 font-fraunces text-[30px] font-light leading-[1.15] lg:text-[40px]"
       >
         Viajes de trabajo sin complicaciones
       </Reveal>

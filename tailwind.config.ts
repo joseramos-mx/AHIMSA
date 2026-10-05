@@ -18,7 +18,7 @@ const config: Config = {
         white: "#FFFFFF",
       },
       fontFamily: {
-        playfair: ["var(--font-playfair)", "ui-serif", "Georgia", "serif"],
+        fraunces: ["var(--font-fraunces)", "ui-serif", "Georgia", "serif"],
         figtree: [
           "var(--font-figtree)",
           "ui-sans-serif",

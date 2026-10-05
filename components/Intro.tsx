@@ -12,7 +12,7 @@ export default function Intro() {
         <Reveal
           as="h2"
           delay={0}
-          className="font-playfair font-normal text-[44px] md:text-[72px] leading-[1.05] max-w-[18ch]"
+          className="font-fraunces font-light text-[44px] md:text-[72px] leading-[1.05] max-w-[18ch]"
         >
           <span id="intro-title">Viajar bien no es suerte</span>
         </Reveal>

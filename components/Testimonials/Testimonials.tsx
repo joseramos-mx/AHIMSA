@@ -92,7 +92,7 @@ function Carousel({ items }: { items: Testimonial[] }) {
               id="testimonios-title"
               delay={0.1}
               text="Lo que dicen quienes ya viajaron conmigo"
-              className="mt-5 max-w-[680px] font-playfair text-[34px] font-normal leading-[1.1] text-ink lg:text-[48px]"
+              className="mt-5 max-w-[680px] font-fraunces text-[34px] font-light leading-[1.1] text-ink lg:text-[48px]"
             />
           </div>
           <SliderControls
@@ -154,7 +154,7 @@ function Carousel({ items }: { items: Testimonial[] }) {
         </motion.div>
 
         {/* Precarga la foto del siguiente testimonio (mismo sizes → misma URL). */}
-        {next && (
+        {next?.image && (
           <div aria-hidden="true" className="hidden">
             <Image
               src={next.image}

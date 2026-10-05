@@ -147,7 +147,7 @@ function MomentBlockMobile({
         <span className="font-figtree text-[12px] font-medium uppercase tracking-[0.2em] text-accent-dark">
           {moment.time}
         </span>
-        <h3 className="font-playfair text-[22px] leading-tight text-ink">
+        <h3 className="font-fraunces font-light text-[22px] leading-tight text-ink">
           {moment.title}
         </h3>
         <p className="font-figtree text-[15px] leading-[1.5] text-ink/85 max-w-[260px]">
@@ -230,7 +230,7 @@ export default function DayInParisMobile() {
         <article className="relative flex flex-col gap-6">
           <motion.h2
             {...introTextProps}
-            className="font-playfair font-normal text-[48px] leading-[0.95] text-ink"
+            className="font-fraunces font-light text-[48px] leading-[0.95] text-ink"
           >
             {intro.intro.titleTop}
             <br />
@@ -271,7 +271,7 @@ export default function DayInParisMobile() {
                 })}
             className="relative flex flex-col gap-5"
           >
-            <h2 className="font-playfair font-normal text-[32px] leading-[1.1] text-ink">
+            <h2 className="font-fraunces font-light text-[32px] leading-[1.1] text-ink">
               {closing.title}
             </h2>
             <Link

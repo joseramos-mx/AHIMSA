@@ -52,7 +52,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
               href="/"
               onClick={onClose}
               aria-label="AHIMSA, inicio"
-              className="font-playfair text-base leading-none text-cream"
+              className="font-fraunces font-light text-base leading-none text-cream"
             >
               AHIMSA
             </Link>
@@ -95,7 +95,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
                 <Link
                   href={navHref(link.href, pathname)}
                   onClick={onClose}
-                  className="font-playfair text-[32px] leading-tight text-cream hover:text-accent transition-colors"
+                  className="font-fraunces font-light text-[32px] leading-tight text-cream hover:text-accent transition-colors"
                 >
                   {link.label}
                 </Link>

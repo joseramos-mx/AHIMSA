@@ -109,12 +109,27 @@ export default function TestimonialSlide({
   let photo;
   if (ghost) {
     photo = <div className={PHOTO_FRAME} />;
+  } else if (!t.image) {
+    // Sin foto todavía: mismo marco (la altura no cambia) con una comilla
+    // decorativa.
+    photo = (
+      <motion.div
+        custom={direction}
+        variants={animated ? photoV : undefined}
+        aria-hidden="true"
+        className={`${PHOTO_FRAME} flex items-center justify-center bg-[#E9E2D6]`}
+      >
+        <span className="translate-y-[12%] font-fraunces text-[220px] font-light leading-none text-accent/35 [font-variation-settings:'opsz'_144]">
+          “
+        </span>
+      </motion.div>
+    );
   } else if (mode === "reveal") {
     photo = (
       <div className={PHOTO_FRAME}>
         <RevealImage
           src={t.image}
-          alt={t.imageAlt}
+          alt={t.imageAlt ?? ""}
           sizes={SIZES}
           className="!absolute inset-0"
         />
@@ -131,7 +146,7 @@ export default function TestimonialSlide({
           variants={animated && !reduce ? scaleVariants : undefined}
           className="absolute inset-0"
         >
-          <Photo src={t.image} alt={t.imageAlt} />
+          <Photo src={t.image} alt={t.imageAlt ?? ""} />
         </motion.div>
       </motion.div>
     );
@@ -165,11 +180,11 @@ export default function TestimonialSlide({
       >
         <span
           aria-hidden="true"
-          className="block h-[60px] font-playfair text-[120px] leading-[1] text-accent/40"
+          className="block h-[60px] font-fraunces font-light text-[120px] leading-[1] text-accent/40"
         >
           “
         </span>
-        <blockquote className="max-w-[560px] font-playfair text-[22px] font-normal leading-[1.35] text-ink lg:text-[30px]">
+        <blockquote className="max-w-[560px] font-fraunces text-[22px] font-light leading-[1.35] text-ink lg:text-[30px]">
           <p>{t.quote}</p>
         </blockquote>
         <span aria-hidden="true" className="mt-8 block h-px w-10 bg-accent" />
@@ -177,9 +192,13 @@ export default function TestimonialSlide({
           <span className="font-figtree text-[16px] font-medium text-ink">
             {t.name}
           </span>
-          <span className="font-figtree text-[14px] text-ink/65">
-            {t.city} · {t.destination}
-          </span>
+          {(t.city || t.destination || t.source) && (
+            <span className="font-figtree text-[14px] text-ink/65">
+              {[t.city, t.destination, t.source && `vía ${t.source}`]
+                .filter(Boolean)
+                .join(" · ")}
+            </span>
+          )}
           {niche && (
             <span className="mt-3 border border-accent px-2 py-1 font-figtree text-[12px] uppercase tracking-[0.12em] text-accent-dark">
               {niche.name}

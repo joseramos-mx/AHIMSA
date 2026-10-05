@@ -43,7 +43,7 @@ export default function Footer() {
         <div className="flex flex-col items-start gap-8 border-b border-cream/15 pb-12 lg:flex-row lg:items-end lg:justify-between lg:pb-12">
           <SplitHeading
             text={FOOTER_CLOSING.title}
-            className="max-w-[640px] font-playfair text-[30px] font-normal leading-[1.1] text-cream lg:text-[44px]"
+            className="max-w-[640px] font-fraunces text-[30px] font-light leading-[1.1] text-cream lg:text-[44px]"
           />
           <AnimatedButton href={FOOTER_CLOSING.cta.href} variant="light">
             {FOOTER_CLOSING.cta.label}

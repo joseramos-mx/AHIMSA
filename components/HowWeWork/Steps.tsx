@@ -50,7 +50,7 @@ export default function Steps() {
       <div className="flex flex-col items-start lg:sticky lg:top-[120px] lg:col-span-5 lg:self-start">
         <Reveal
           as="h2"
-          className="font-playfair text-[38px] font-normal leading-[1.1] text-ink lg:text-[48px]"
+          className="font-fraunces text-[38px] font-light leading-[1.1] text-ink lg:text-[48px]"
         >
           {STEPS_TITLE}
         </Reveal>
@@ -114,13 +114,13 @@ export default function Steps() {
                 <span
                   data-step-anchor
                   aria-hidden="true"
-                  className={`block font-playfair text-[64px] leading-none transition-colors duration-500 lg:text-[96px] ${
+                  className={`block font-fraunces font-light text-[64px] leading-none transition-colors duration-500 lg:text-[96px] ${
                     isActive ? "text-accent" : "text-accent/40"
                   }`}
                 >
                   {step.number}
                 </span>
-                <h3 className="mt-4 font-playfair text-[28px] font-normal leading-tight text-ink">
+                <h3 className="mt-4 font-fraunces text-[28px] font-light leading-tight text-ink">
                   {step.title}
                 </h3>
                 <p className="mt-3 max-w-[420px] font-figtree text-[17px] leading-[1.6] text-ink/85">

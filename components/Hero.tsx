@@ -191,7 +191,7 @@ function HeroCopy({ inner = false }: { inner?: boolean }) {
     : "absolute left-5 right-5 bottom-[12svh] md:left-14 md:right-auto md:bottom-16 md:max-w-[640px] text-white";
   return (
     <div className={className}>
-      <h1 className="font-playfair font-medium text-[40px] md:text-[64px] leading-[1.05] max-w-[14ch]">
+      <h1 className="font-fraunces font-light text-[40px] md:text-[64px] leading-[1.05] max-w-[14ch]">
         Tu viaje a Europa, diseñado para tu familia
       </h1>
       <p className="font-figtree text-base md:text-lg mt-4 max-w-[520px] text-white/90">

@@ -59,7 +59,7 @@ function MomentText({
       <span className="font-figtree text-[12px] font-medium uppercase tracking-[0.2em] text-accent-dark">
         {moment.time}
       </span>
-      <h3 className="font-playfair text-[22px] leading-tight text-ink">
+      <h3 className="font-fraunces font-light text-[22px] leading-tight text-ink">
         {moment.title}
       </h3>
       <p className="font-figtree text-[15px] leading-[1.5] text-ink/85">
@@ -105,7 +105,7 @@ function ClosingBlock({
       style={{ opacity, y }}
       className="flex flex-col gap-6 max-w-[380px] self-center"
     >
-      <h2 className="font-playfair font-normal text-[36px] md:text-[48px] leading-[1.1] text-ink">
+      <h2 className="font-fraunces font-light text-[36px] md:text-[48px] leading-[1.1] text-ink">
         {closing.title}
       </h2>
       <Link
@@ -160,18 +160,18 @@ function IntroLayout({
         />
       </div>
 
-      {/* top = baseline - 0.915em: coloca la línea base de Playfair donde
+      {/* top = baseline - 0.861em: coloca la línea base de Fraunces donde
           cae en el mockup (cualquier tamaño de fuente). */}
-      <h2 className="pointer-events-none font-playfair font-normal leading-none text-ink">
+      <h2 className="pointer-events-none font-fraunces font-light leading-none text-ink">
         <span
           className="absolute whitespace-nowrap z-20"
-          style={{ left: "25.1vw", top: "calc(21.4vh - 0.915em)", fontSize: "6.2vw" }}
+          style={{ left: "25.1vw", top: "calc(21.4vh - 0.861em)", fontSize: "6.2vw" }}
         >
           {intro.titleTop}
         </span>
         <span
           className="absolute whitespace-nowrap z-20"
-          style={{ left: "53.4vw", top: "calc(91vh - 0.915em)", fontSize: "6.2vw" }}
+          style={{ left: "53.4vw", top: "calc(91vh - 0.861em)", fontSize: "6.2vw" }}
         >
           {intro.titleBottom}
         </span>

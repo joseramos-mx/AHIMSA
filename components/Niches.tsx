@@ -53,7 +53,7 @@ export default function Niches() {
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         <Reveal
           as="h2"
-          className="font-playfair font-normal text-[34px] md:text-[48px] leading-[1.1] text-center max-w-[22ch] mx-auto mb-10 md:mb-14"
+          className="font-fraunces font-light text-[34px] md:text-[48px] leading-[1.1] text-center max-w-[22ch] mx-auto mb-10 md:mb-14"
         >
           <span id="niches-title">
             Un viaje distinto para cada momento de tu vida

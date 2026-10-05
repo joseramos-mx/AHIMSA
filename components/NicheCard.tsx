@@ -42,7 +42,7 @@ export default function NicheCard({
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5 p-3">
-        <h3 className="font-playfair text-[17px] leading-tight text-accent-dark">
+        <h3 className="font-fraunces font-light text-[17px] leading-tight text-accent-dark">
           {name}
         </h3>
         <p className="font-figtree text-[14px] leading-[1.5] text-ink">

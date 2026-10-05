@@ -49,7 +49,7 @@ export default function AboutBlock() {
         <SplitHeading
           delay={0.1}
           text={`Hola, soy ${FOUNDER_NAME}`}
-          className="mt-5 font-playfair text-[38px] font-normal leading-[1.05] text-ink lg:text-[56px]"
+          className="mt-5 font-fraunces text-[38px] font-light leading-[1.05] text-ink lg:text-[56px]"
         />
 
         <Reveal
@@ -68,7 +68,7 @@ export default function AboutBlock() {
               key={fact}
               delay={0.4 + i * 0.1}
               distance={16}
-              className="py-3 font-playfair text-[18px] leading-snug text-ink md:px-6 md:py-0 md:first:pl-0 md:last:pr-0"
+              className="py-3 font-fraunces font-light text-[18px] leading-snug text-ink md:px-6 md:py-0 md:first:pl-0 md:last:pr-0"
             >
               {fact}
             </Reveal>

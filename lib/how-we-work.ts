@@ -3,7 +3,7 @@
  */
 
 /** Nombre de la fundadora. Se usa en el título y en el alt de la foto. */
-export const FOUNDER_NAME = "[Nombre]";
+export const FOUNDER_NAME = "Fátima";
 
 /** Foto de perfil (proporción 4:5). Si falta, se ve un bloque con el nombre
  *  del archivo en su lugar. */

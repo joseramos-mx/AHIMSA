@@ -44,7 +44,7 @@ export default function ServiceRow({
       <span className="flex min-w-0 flex-col gap-2">
         <span
           className={cn(
-            "self-start font-playfair text-[24px] leading-tight text-ink",
+            "self-start font-fraunces font-light text-[24px] leading-tight text-ink",
             MOVE,
             "motion-safe:[@media(pointer:fine)]:group-hover:translate-x-2"
           )}

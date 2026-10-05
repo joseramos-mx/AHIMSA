@@ -14,7 +14,7 @@ export default function ServiceList() {
     <div className="flex h-full flex-col">
       <Reveal
         as="h2"
-        className="font-playfair text-[26px] font-normal leading-tight text-ink lg:text-[32px]"
+        className="font-fraunces text-[26px] font-light leading-tight text-ink lg:text-[32px]"
       >
         También te ayudo con
       </Reveal>
