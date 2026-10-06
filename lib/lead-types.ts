@@ -29,3 +29,30 @@ export function parseLeadType(value: string | null | undefined): LeadType | null
 export function contactHref(type: LeadType) {
   return `/contacto?tipo=${type}`;
 }
+
+/** Estado inicial del formulario de /contacto a partir de la URL. */
+export type ContactParams = {
+  kind: "trip" | "business" | "agent";
+  interests: Exclude<TripType, "empresa">[];
+  service: "bespoke" | "circuito" | "";
+  circuit: string;
+};
+
+/**
+ * ?tipo=empresa → empresa; ?tipo=agente → agente; cualquier otro tipo de
+ * viaje → "Quiero viajar" con ese interés marcado; sin tipo → viajar.
+ * ?servicio=bespoke|circuito y ?circuito=slug se conservan aparte.
+ */
+export function parseContactParams(params: {
+  get(name: string): string | null;
+}): ContactParams {
+  const tipo = parseLeadType(params.get("tipo"));
+  const servicio = params.get("servicio");
+  const circuito = (params.get("circuito") ?? "").toLowerCase();
+  return {
+    kind: tipo === "empresa" ? "business" : tipo === "agente" ? "agent" : "trip",
+    interests: tipo && tipo !== "empresa" && tipo !== "agente" ? [tipo] : [],
+    service: servicio === "bespoke" || servicio === "circuito" ? servicio : "",
+    circuit: /^[a-z0-9-]{1,80}$/.test(circuito) ? circuito : "",
+  };
+}

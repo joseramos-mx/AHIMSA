@@ -57,8 +57,9 @@ export default function FooterCurtain({
 
   return (
     <>
+      {/* min-h-screen: en páginas cortas el footer fijo no se asoma por debajo. */}
       <div
-        className="relative z-10 bg-cream"
+        className="relative z-10 min-h-screen bg-cream"
         style={{ marginBottom: enabled ? height : 0 }}
       >
         {children}

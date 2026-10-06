@@ -19,3 +19,6 @@ export const WHATSAPP_URL = whatsappUrl(WHATSAPP_MESSAGE);
 export const WHATSAPP_AGENT_MESSAGE =
   "Hola, vi tu página y quiero saber cómo ser agente de viajes.";
 export const WHATSAPP_AGENT_URL = whatsappUrl(WHATSAPP_AGENT_MESSAGE);
+
+/** Tiempo de respuesta prometido en /contacto ("Te contacto en …"). */
+export const RESPONSE_TIME = "menos de 24 horas";
