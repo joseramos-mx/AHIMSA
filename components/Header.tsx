@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -169,9 +170,16 @@ export default function Header(props: HeaderProps) {
             <Link
               href="/"
               aria-label="AHIMSA, inicio"
-              className="font-fraunces font-light [font-variation-settings:'opsz'_144] text-base md:text-xl text-ink leading-none"
+              className="inline-flex items-center leading-none"
             >
-              AHIMSA
+              <Image
+                src="/logo-simple-color.svg"
+                alt="AHIMSA"
+                width={240}
+                height={48}
+                priority
+                className="h-5 md:h-6 w-auto select-none"
+              />
             </Link>
             <nav
               className="hidden md:flex items-center gap-7"
@@ -218,27 +226,31 @@ export default function Header(props: HeaderProps) {
           data-[at-end]:bg-cream/85 data-[at-end]:backdrop-blur-md data-[at-end]:border-ink/10"
       >
         <div className="flex items-center justify-between px-5 md:px-10 h-16">
-          {/* opsz 144: el logo se escala con transform desde ~20px; sin fijar
-              el tamaño óptico se vería el corte de texto chico de Fraunces.
-              Logo: one visible element (the motion.a). The invisible span
-              reserves layout space so getBoundingClientRect gives us the
-              natural (post-animation) position for the FLIP math. */}
+          {/* Logo FLIP. El <Image> invisible reserva layout para que
+              getBoundingClientRect del contenedor dé el rect natural y la
+              FLIP escale desde ahí. Dentro del motion.a se apilan la
+              versión light (blanca, visible sobre el hero oscuro) y la
+              color (dorado/petróleo, visible sobre el header aterrizado):
+              se intercambian por opacidad con transition-opacity de 300ms,
+              acompañando el swap de fondo del header. Ambas comparten el
+              mismo frame por lo que la FLIP se aplica a UNA sola marca. */}
           <div
             ref={logoContainerRef}
             className="relative inline-block leading-none"
           >
-            <span
+            <Image
+              src="/logo-simple-color.svg"
+              alt=""
               aria-hidden="true"
-              className="invisible font-fraunces font-light [font-variation-settings:'opsz'_144] text-base md:text-xl leading-none select-none"
-            >
-              AHIMSA
-            </span>
+              width={240}
+              height={48}
+              priority
+              className="invisible h-5 md:h-6 w-auto select-none"
+            />
             <motion.a
               href="/"
               aria-label="AHIMSA, inicio"
-              className={`absolute left-0 top-0 origin-top-left font-fraunces font-light [font-variation-settings:'opsz'_144] text-base md:text-xl leading-none select-none will-change-transform transition-colors duration-300 ${
-                atEnd ? "text-ink" : "text-white"
-              }`}
+              className="absolute left-0 top-0 origin-top-left leading-none select-none will-change-transform"
               style={{
                 scale: logoScale,
                 x: logoX,
@@ -246,7 +258,29 @@ export default function Header(props: HeaderProps) {
                 opacity: measured ? 1 : 0,
               }}
             >
-              AHIMSA
+              <span className="relative block h-5 md:h-6">
+                <Image
+                  src="/logo-simple-light.svg"
+                  alt="AHIMSA"
+                  width={240}
+                  height={48}
+                  priority
+                  className={`block h-5 md:h-6 w-auto select-none transition-opacity duration-300 ${
+                    atEnd ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+                <Image
+                  src="/logo-simple-color.svg"
+                  alt=""
+                  aria-hidden="true"
+                  width={240}
+                  height={48}
+                  priority
+                  className={`absolute inset-0 block h-5 md:h-6 w-auto select-none transition-opacity duration-300 ${
+                    atEnd ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+              </span>
             </motion.a>
           </div>
 

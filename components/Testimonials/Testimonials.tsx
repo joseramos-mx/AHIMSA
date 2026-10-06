@@ -106,7 +106,7 @@ function Carousel({ items }: { items: Testimonial[] }) {
         {/* Anuncia el cambio a lectores de pantalla. */}
         <p aria-live="polite" className="sr-only">
           {navigated
-            ? `Testimonio ${index + 1} de ${total}: ${current.name}`
+            ? `Testimonio ${index + 1} de ${total}${current.name ? `: ${current.name}` : ""}`
             : ""}
         </p>
 

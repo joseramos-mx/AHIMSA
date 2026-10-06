@@ -9,6 +9,8 @@ import Niches from "@/components/Niches";
 import DayInParisResponsive from "@/components/DayInParis/DayInParisResponsive";
 import CallToAction from "@/components/CallToAction";
 import HowWeWork from "@/components/HowWeWork/HowWeWork";
+import Providers from "@/components/Providers/Providers";
+import Certifications from "@/components/Certifications/Certifications";
 import Testimonials from "@/components/Testimonials/Testimonials";
 import Services from "@/components/Services/Services";
 
@@ -40,6 +42,8 @@ export default function Page() {
 
       <CallToAction />
       <HowWeWork />
+      <Providers />
+      <Certifications />
       <Testimonials />
       <Services />
     </main>

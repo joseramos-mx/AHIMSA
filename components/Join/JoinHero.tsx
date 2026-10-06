@@ -1,3 +1,4 @@
+import Image from "next/image";
 import AnimatedButton from "@/components/ui/AnimatedButton";
 import Reveal from "@/components/Reveal";
 import RevealImage from "@/components/RevealImage";
@@ -11,6 +12,17 @@ export default function JoinHero() {
     <section className="bg-cream px-6 pb-20 pt-32 text-ink md:px-10 lg:pb-32 lg:pt-40">
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-6">
+          {/* Firma de marca — identidad completa (dorado + petróleo) */}
+          <Reveal distance={0} className="mb-8">
+            <Image
+              src="/logo-completo-color.svg"
+              alt="Ahimsa Travel — Fátima Nieto"
+              width={400}
+              height={80}
+              priority
+              className="h-10 w-auto select-none md:h-12"
+            />
+          </Reveal>
           <Reveal
             as="p"
             distance={0}

@@ -3,6 +3,6 @@
  * crédito visible; se muestra en el footer.
  */
 export const SKIPER_UI_CREDIT = {
-  label: "Componentes de interfaz por Skiper UI",
+  label: "skiper",
   href: "https://skiper-ui.com",
 };

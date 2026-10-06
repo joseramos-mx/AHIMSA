@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
@@ -52,9 +53,15 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
               href="/"
               onClick={onClose}
               aria-label="AHIMSA, inicio"
-              className="font-fraunces font-light text-base leading-none text-cream"
+              className="inline-flex items-center leading-none"
             >
-              AHIMSA
+              <Image
+                src="/logo-simple-light.svg"
+                alt="AHIMSA"
+                width={240}
+                height={48}
+                className="h-5 w-auto select-none"
+              />
             </Link>
             <button
               type="button"

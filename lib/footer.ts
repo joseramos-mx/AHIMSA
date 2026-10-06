@@ -42,29 +42,3 @@ export const SOCIAL_LINKS: SocialLink[] = [
 ];
 
 export const isRealUrl = (href: string) => /^https?:\/\//.test(href);
-
-export type Credential = {
-  /** Texto tal como debe aparecer (sin logos). */
-  label: string;
-  published: boolean;
-};
-
-/*
- * Mostrar solo credenciales que Archer autorice explícitamente.
- *
- * Con published: false solo se ven en desarrollo (marcadas "Borrador");
- * en producción no aparecen. Si ninguna está publicada, la columna
- * "Respaldo" no se renderiza.
- */
-export const CREDENTIALS: Credential[] = [
-  { label: "[Credencial o certificación 1]", published: false },
-  { label: "[Asociación o membresía]", published: false },
-  { label: "[Seguro o respaldo de operador]", published: false },
-];
-
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
-
-/** En producción solo las publicadas; en desarrollo todas. */
-export function getVisibleCredentials(): Credential[] {
-  return IS_PRODUCTION ? CREDENTIALS.filter((c) => c.published) : CREDENTIALS;
-}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { NAV_LINKS, navHref } from "@/lib/nav";
@@ -12,7 +13,6 @@ import {
   FOOTER_TAGLINE,
   JOIN_LINK,
   SOCIAL_LINKS,
-  getVisibleCredentials,
   isRealUrl,
 } from "@/lib/footer";
 import SplitHeading from "@/components/SplitHeading";
@@ -21,7 +21,8 @@ import FooterLink from "./FooterLink";
 import FooterWordmark from "./FooterWordmark";
 import BackToTop from "./BackToTop";
 
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
+/** ¿Es placeholder entre corchetes? Si lo es, no se muestra. */
+const isPlaceholder = (s: string) => /^\[.*\]$/.test(s.trim());
 
 function Column({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -36,8 +37,9 @@ function Column({ title, children }: { title: string; children: ReactNode }) {
 
 export default function Footer() {
   const pathname = usePathname();
-  const credentials = getVisibleCredentials();
   const year = new Date().getFullYear();
+  const emailOk = !isPlaceholder(CONTACT_EMAIL);
+  const hoursOk = !isPlaceholder(CONTACT_HOURS);
 
   return (
     <footer className="bg-ink pt-16 text-cream lg:pt-24">
@@ -60,86 +62,52 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 2. Columnas */}
+        {/* 2. Columnas (sin "Respaldo": ya existe la sección Certificaciones
+            en la home, con más detalle y los certificados completos) */}
         <nav
           aria-label="Pie de página"
-          className="grid grid-cols-1 gap-12 py-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-10 lg:py-10"
+          className="grid grid-cols-1 gap-12 py-12 md:grid-cols-2 lg:gap-16 lg:py-10"
         >
-          <div className="lg:col-span-3">
-            <Column title="Explora">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <FooterLink href={navHref(link.href, pathname)}>
-                    {link.label}
-                  </FooterLink>
-                </li>
-              ))}
-              <li>
-                <FooterLink href={JOIN_LINK.href}>{JOIN_LINK.label}</FooterLink>
-              </li>
-            </Column>
-          </div>
-
-          <div className="lg:col-span-4">
-            <Column title="Contacto">
-              <li>
-                <FooterLink href={WHATSAPP_URL} external>
-                  WhatsApp
+          <Column title="Explora">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <FooterLink href={navHref(link.href, pathname)}>
+                  {link.label}
                 </FooterLink>
               </li>
+            ))}
+            <li>
+              <FooterLink href={JOIN_LINK.href}>{JOIN_LINK.label}</FooterLink>
+            </li>
+          </Column>
+
+          <Column title="Contacto">
+            <li>
+              <FooterLink href={WHATSAPP_URL} external>
+                WhatsApp
+              </FooterLink>
+            </li>
+            {emailOk && (
               <li>
                 <FooterLink href={`mailto:${CONTACT_EMAIL}`}>
                   {CONTACT_EMAIL}
                 </FooterLink>
               </li>
-              {SOCIAL_LINKS.map((social) =>
-                isRealUrl(social.href) ? (
-                  <li key={social.network}>
-                    <FooterLink href={social.href} external>
-                      {social.network}
-                      <span className="sr-only"> {social.handle}</span>
-                    </FooterLink>
-                  </li>
-                ) : (
-                  // URL pendiente: solo en desarrollo, marcada como borrador.
-                  !IS_PRODUCTION && (
-                    <li
-                      key={social.network}
-                      className="font-figtree text-[16px] text-cream/85"
-                    >
-                      {social.network}
-                      <span className="ml-2 rounded-[2px] bg-cream px-1.5 py-0.5 align-middle text-[10px] font-medium uppercase tracking-[0.12em] text-ink">
-                        Borrador
-                      </span>
-                    </li>
-                  )
-                )
-              )}
+            )}
+            {SOCIAL_LINKS.filter((s) => isRealUrl(s.href)).map((social) => (
+              <li key={social.network}>
+                <FooterLink href={social.href} external>
+                  {social.network}
+                  <span className="sr-only"> {social.handle}</span>
+                </FooterLink>
+              </li>
+            ))}
+            {hoursOk && (
               <li className="font-figtree text-[16px] text-cream/85">
                 {CONTACT_HOURS}
               </li>
-            </Column>
-          </div>
-
-          {credentials.length > 0 && (
-            <div className="lg:col-span-4 lg:col-start-9">
-              <Column title="Respaldo">
-                {credentials.map((c) => (
-                  <li
-                    key={c.label}
-                    className="font-figtree text-[16px] text-cream/85"
-                  >
-                    {c.label}
-                    {!c.published && !IS_PRODUCTION && (
-                      <span className="ml-2 rounded-[2px] bg-cream px-1.5 py-0.5 align-middle text-[10px] font-medium uppercase tracking-[0.12em] text-ink">
-                        Borrador
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </Column>
-            </div>
-          )}
+            )}
+          </Column>
         </nav>
       </div>
 
@@ -149,9 +117,21 @@ export default function Footer() {
       {/* 4. Barra inferior */}
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         <div className="flex flex-col gap-4 border-t border-cream/15 py-6 font-figtree text-[13px] text-cream/60 lg:flex-row lg:items-center lg:justify-between">
-          <p suppressHydrationWarning>
-            © {year} Ahimsa Travel. Todos los derechos reservados.
-          </p>
+          {/* Marca completa (versión blanca) + año. Reemplaza el texto
+              "© 2026 Ahimsa Travel …" para evitar duplicar el nombre
+              con el SVG, y da identidad visual al pie. */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Image
+              src="/logo-completo-light.svg"
+              alt="Ahimsa Travel — Fátima Nieto"
+              width={400}
+              height={80}
+              className="h-7 w-auto select-none opacity-80"
+            />
+            <span suppressHydrationWarning>
+              © {year}. Todos los derechos reservados.
+            </span>
+          </div>
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
             <FooterLink
               href="/aviso-de-privacidad"

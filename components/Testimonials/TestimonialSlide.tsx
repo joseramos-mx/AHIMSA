@@ -189,9 +189,11 @@ export default function TestimonialSlide({
         </blockquote>
         <span aria-hidden="true" className="mt-8 block h-px w-10 bg-accent" />
         <figcaption className="mt-6 flex flex-col items-start gap-1">
-          <span className="font-figtree text-[16px] font-medium text-ink">
-            {t.name}
-          </span>
+          {t.name && (
+            <span className="font-figtree text-[16px] font-medium text-ink">
+              {t.name}
+            </span>
+          )}
           {(t.city || t.destination || t.source) && (
             <span className="font-figtree text-[14px] text-ink/65">
               {[t.city, t.destination, t.source && `vía ${t.source}`]
