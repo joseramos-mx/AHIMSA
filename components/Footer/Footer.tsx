@@ -11,7 +11,7 @@ import {
   CONTACT_HOURS,
   FOOTER_CLOSING,
   FOOTER_TAGLINE,
-  JOIN_LINK,
+  EXTRA_EXPLORE_LINK,
   SOCIAL_LINKS,
   isRealUrl,
 } from "@/lib/footer";
@@ -77,7 +77,9 @@ export default function Footer() {
               </li>
             ))}
             <li>
-              <FooterLink href={JOIN_LINK.href}>{JOIN_LINK.label}</FooterLink>
+              <FooterLink href={navHref(EXTRA_EXPLORE_LINK.href, pathname)}>
+                {EXTRA_EXPLORE_LINK.label}
+              </FooterLink>
             </li>
           </Column>
 
