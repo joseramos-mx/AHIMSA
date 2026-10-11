@@ -7,14 +7,15 @@ export const FOOTER_CLOSING = {
   cta: { label: "Cotiza tu viaje", href: "/contacto" },
 };
 
-// TODO: reemplazar por el correo y horario reales.
-export const CONTACT_EMAIL = "[correo@ahimsa.travel]";
+export const CONTACT_EMAIL = "ahimsa.travel25@gmail.com";
+// TODO: reemplazar por el horario real.
 export const CONTACT_HOURS = "[Horario de atención]";
 
 export const FOOTER_TAGLINE = "Viajes que inspiran";
 
-/** Link extra al final de "Explora" (no va en el nav principal). */
-export const JOIN_LINK = { label: "Únete a mi equipo", href: "/unete-a-mi-equipo" };
+/** Link extra al final de "Explora": la sección de empresas ya no está en el
+ *  nav principal (su lugar lo tomó "Quiero ser agente"). */
+export const EXTRA_EXPLORE_LINK = { label: "Empresas", href: "#empresas" };
 
 export type SocialLink = {
   network: string;

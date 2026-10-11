@@ -30,7 +30,7 @@ export const NICHES: Niche[] = [
     slug: "family-europe",
     name: "Family Europe",
     description:
-      "Circuitos armados o itinerarios a tu medida por París, Roma, Madrid y más, pensados para viajar en familia.",
+      "Circuitos armados o itinerarios a tu medida por París, Roma, Madrid y más, pensados para viajar en familia o con amigos.",
     image: "/media/niches/family-europe.jpg",
     alt: "Columnas del Foro Romano y cúpulas de iglesias bajo un cielo azul en Roma.",
   },
@@ -38,7 +38,7 @@ export const NICHES: Niche[] = [
     slug: "magic-families",
     name: "Magic Families",
     description:
-      "Orlando, Anaheim y Hawái. Parques, hoteles temáticos y todo resuelto para que los niños solo vivan la magia.",
+      "Parques temáticos: Disney (Orlando, California y París) y Universal (California y Orlando). Todo resuelto para que los viajeros vivan la magia.",
     image: "/media/niches/magic-families.jpg",
     alt: "Rueda de la fortuna y montaña rusa iluminadas al anochecer, reflejadas en el lago de un parque de atracciones.",
   },

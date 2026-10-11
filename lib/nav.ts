@@ -10,7 +10,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Europa bespoke", href: "#europa" },
   { label: "Cómo trabajamos", href: "#como-trabajamos" },
   { label: "Testimonios", href: "#testimonios" },
-  { label: "Empresas", href: "#empresas" },
+  { label: "Quiero ser agente", href: "/unete-a-mi-equipo" },
   // Sin testimonios publicados la sección no existe: se quita su link.
 ].filter(
   (link) => link.href !== "#testimonios" || hasPublishedTestimonials()
