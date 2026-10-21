@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { headers } from "next/headers";
 import { leadPriority, leadSchema, type LeadData, type LeadPriority } from "@/lib/lead-schema";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
+import { isLeadEmailConfigured, sendLeadEmail } from "@/lib/email/lead-email";
 
 export type SubmitLeadResult =
   | { ok: true; priority?: LeadPriority }
@@ -84,11 +85,14 @@ export async function submitLead(input: unknown): Promise<SubmitLeadResult> {
     return { ok: true };
   }
 
+  // Canales: Supabase (guardar + límite por IP + n8n) y correo (Resend).
+  // Con que uno funcione el lead no se pierde.
   const supabase = getSupabaseAdmin();
-  if (!supabase) {
-    console.error("[leads] Supabase no está configurado (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)");
+  if (!supabase && !isLeadEmailConfigured()) {
+    console.error("[leads] ni Supabase ni Resend están configurados");
     return { ok: false, formError: GENERIC_ERROR };
   }
+  if (!supabase) console.warn("[leads] Supabase no está configurado: solo se enviará por correo");
 
   const h = await headers();
   const ip =
@@ -96,7 +100,7 @@ export async function submitLead(input: unknown): Promise<SubmitLeadResult> {
   const ipHash = ip ? hashIp(ip) : null;
 
   // 3. Límite por IP (solo se guarda el hash, nunca la IP en claro).
-  if (ipHash) {
+  if (supabase && ipHash) {
     const since = new Date(Date.now() - RATE_WINDOW_MS).toISOString();
     const { count, error } = await supabase
       .from("leads")
@@ -140,18 +144,27 @@ export async function submitLead(input: unknown): Promise<SubmitLeadResult> {
     user_agent: h.get("user-agent")?.slice(0, 300) ?? null,
   };
 
-  const { data: inserted, error } = await supabase
-    .from("leads")
-    .insert(row)
-    .select("id, created_at")
-    .single();
-  if (error) {
-    console.error("[leads] no se pudo guardar el lead", error.message);
-    return { ok: false, formError: GENERIC_ERROR };
+  let inserted: { id: string; created_at: string } | null = null;
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("leads")
+      .insert(row)
+      .select("id, created_at")
+      .single();
+    if (error) console.error("[leads] no se pudo guardar el lead", error.message);
+    else inserted = data;
   }
 
-  // 5. Avisar a n8n (sin ip_hash ni user agent).
-  await notifyN8n({ id: inserted.id, created_at: inserted.created_at, ...lead });
+  // 5. Avisos en paralelo: correo a Fátima (Resend) y n8n (solo si se
+  //    guardó; sin ip_hash ni user agent). Si fallan, solo se registra.
+  const [emailed] = await Promise.all([
+    sendLeadEmail(d, priority, inserted?.id),
+    inserted
+      ? notifyN8n({ id: inserted.id, created_at: inserted.created_at, ...lead })
+      : Promise.resolve(),
+  ]);
 
+  // Error solo si el lead no quedó en ningún lado.
+  if (!inserted && !emailed) return { ok: false, formError: GENERIC_ERROR };
   return { ok: true, priority };
 }

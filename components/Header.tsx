@@ -159,6 +159,12 @@ export default function Header(props: HeaderProps) {
   const logoScale = useTransform(progress, [0, 0.35], [m.bigScale, 1]);
   const logoX = useTransform(progress, [0, 0.35], [m.bigX, 0]);
   const logoY = useTransform(progress, [0, 0.35], [m.bigY, 0]);
+  // Logo grande (inicio): versión completa con "Fátima Nieto". Al encogerse
+  // cede el lugar a la sencilla, legible al tamaño del header. Es un relevo
+  // (una sale y después entra la otra) para que los textos no se encimen.
+  // Ambos SVG comparten proporción (1920×382): no hay salto de layout.
+  const fullLogoOpacity = useTransform(progress, [0.08, 0.16], [1, 0]);
+  const simpleLogoOpacity = useTransform(progress, [0.16, 0.24], [0, 1]);
 
   // Reduced motion o página sin Hero: skip transforms, render the final
   // state (small logo, visible nav, cream header).
@@ -258,7 +264,24 @@ export default function Header(props: HeaderProps) {
                 opacity: measured ? 1 : 0,
               }}
             >
-              <span className="relative block h-5 md:h-6">
+              <motion.span
+                aria-hidden="true"
+                className="absolute inset-0 block h-5 md:h-6"
+                style={{ opacity: fullLogoOpacity }}
+              >
+                <Image
+                  src="/logo-completo-light.svg"
+                  alt=""
+                  width={240}
+                  height={48}
+                  priority
+                  className="block h-5 md:h-6 w-auto select-none"
+                />
+              </motion.span>
+              <motion.span
+                className="relative block h-5 md:h-6"
+                style={{ opacity: simpleLogoOpacity }}
+              >
                 <Image
                   src="/logo-simple-light.svg"
                   alt="AHIMSA"
@@ -280,7 +303,7 @@ export default function Header(props: HeaderProps) {
                     atEnd ? "opacity-100" : "opacity-0"
                   }`}
                 />
-              </span>
+              </motion.span>
             </motion.a>
           </div>
 
