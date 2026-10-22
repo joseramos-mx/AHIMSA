@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import ContactView from "@/components/Contact/ContactView";
 
 export const metadata: Metadata = {
-  title: "Contacto | Ahimsa Travel",
+  title: "Contacto",
   description:
     "Cuéntame tu viaje, el de tu empresa o si quieres ser agente de viajes. Te contacto en menos de 24 horas.",
   alternates: { canonical: "/contacto" },

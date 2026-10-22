@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Aviso de privacidad | Ahimsa Travel",
+  title: "Aviso de privacidad",
   robots: { index: true, follow: true },
 };
 

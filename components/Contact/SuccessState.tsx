@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { RESPONSE_TIME, whatsappUrl } from "@/lib/contact";
 import type { LeadFormValues } from "@/lib/lead-schema";
 import { buildLeadSummary } from "@/lib/lead-summary";
+import { FOUNDER } from "@/lib/site";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 import AnimatedButton from "@/components/ui/AnimatedButton";
 
@@ -39,7 +40,8 @@ export default function SuccessState({ values }: { values: LeadFormValues }) {
         ¡Listo, ya tengo tu solicitud!
       </h2>
       <p className="mt-5 max-w-[520px] font-figtree text-[18px] leading-[1.6] text-ink/85">
-        Te contacto en {RESPONSE_TIME} por {CHANNEL[values.contactPreference] ?? "WhatsApp"}.
+        Te escribo yo, {FOUNDER.firstName}, en {RESPONSE_TIME} por{" "}
+        {CHANNEL[values.contactPreference] ?? "WhatsApp"}.
       </p>
       <p className="mt-2 font-figtree text-[15px] text-ink/70">
         ¿No quieres esperar? Mándame tu solicitud por WhatsApp.

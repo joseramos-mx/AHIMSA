@@ -29,6 +29,8 @@ import BusinessFields from "./fields/BusinessFields";
 import AgentFields from "./fields/AgentFields";
 import CommonFields from "./fields/CommonFields";
 import { ERROR_TEXT } from "./fields/ui";
+import Image from "next/image";
+import { FOUNDER } from "@/lib/site";
 
 const resolver = zodResolver(leadSchema) as unknown as Resolver<LeadFormValues>;
 
@@ -231,7 +233,7 @@ export default function LeadForm({
           <p role="alert" className={`font-figtree text-[15px] ${ERROR_TEXT} empty:hidden`}>
             {formError ?? ""}
           </p>
-          <div>
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
             <AnimatedButton
               type="submit"
               variant="dark"
@@ -241,6 +243,20 @@ export default function LeadForm({
             >
               {isSubmitting ? "Enviando…" : "Enviar solicitud"}
             </AnimatedButton>
+            {/* Marca personal: la solicitud le llega a ella, no a un equipo anónimo. */}
+            <p className="flex items-center gap-3 font-figtree text-[14px] leading-snug text-ink/75">
+              <Image
+                src={FOUNDER.avatar}
+                alt=""
+                width={80}
+                height={80}
+                className="h-10 w-10 shrink-0 rounded-full object-cover"
+              />
+              <span>
+                Tu solicitud me llega directo a mí, {FOUNDER.firstName}.
+                <br className="hidden sm:block" /> Sin call centers ni bots.
+              </span>
+            </p>
           </div>
         </div>
       </form>

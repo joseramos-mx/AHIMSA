@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import SplitHeading from "@/components/SplitHeading";
+import { FOUNDER } from "@/lib/site";
 import {
   RESPONSE_TIME,
   WHATSAPP_AGENT_URL,
@@ -17,7 +19,7 @@ import type { LeadKind } from "@/lib/lead-schema";
 const COPY: Record<LeadKind, { title: string; text: string }> = {
   trip: {
     title: "Cuéntame tu viaje",
-    text: `Mientras más me cuentes, mejor podré diseñarlo. Te contacto en ${RESPONSE_TIME}.`,
+    text: `Mientras más me cuentes, mejor podré diseñarlo. Te escribo yo misma en ${RESPONSE_TIME}.`,
   },
   business: {
     title: "Viajes para tu empresa",
@@ -29,7 +31,7 @@ const COPY: Record<LeadKind, { title: string; text: string }> = {
   },
 };
 
-const NEXT_STEPS = ["Reviso tu solicitud", "Te contacto por WhatsApp", "Agendamos una llamada"];
+const NEXT_STEPS = ["Reviso tu solicitud personalmente", "Te escribo yo por WhatsApp", "Agendamos una llamada"];
 
 const LINK =
   "font-figtree text-[16px] text-ink underline decoration-ink/30 underline-offset-4 transition-colors hover:decoration-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-[2px]";
@@ -59,6 +61,23 @@ export default function ContactInfo({ kind }: { kind: LeadKind }) {
       </div>
 
       <div className="order-3 flex flex-col gap-10 lg:mt-12">
+        {/* Quién responde: marca personal. */}
+        <div className="flex items-center gap-4">
+          <Image
+            src={FOUNDER.avatar}
+            alt={FOUNDER.fullName}
+            width={112}
+            height={112}
+            className="h-14 w-14 shrink-0 rounded-full object-cover"
+          />
+          <div className="leading-tight">
+            <p className="font-fraunces text-[20px] font-light text-ink">{FOUNDER.fullName}</p>
+            <p className="mt-1 font-figtree text-[14px] text-ink/70">
+              {FOUNDER.role} · Fundadora de Ahimsa Travel
+            </p>
+          </div>
+        </div>
+
         <section aria-labelledby="contacto-directo">
           <h2 id="contacto-directo" className="font-figtree text-[12px] font-medium uppercase tracking-[0.2em] text-ink/60">
             Contacto directo

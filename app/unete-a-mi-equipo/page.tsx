@@ -7,9 +7,9 @@ import JoinSteps from "@/components/Join/JoinSteps";
 import Pricing from "@/components/Join/Pricing";
 import Faq from "@/components/Join/Faq";
 import JoinCta from "@/components/Join/JoinCta";
-import { JOIN_HERO } from "@/lib/join";
+import { OG_IMAGE } from "@/lib/site";
 
-const TITLE = "Únete a mi equipo de agentes de viaje | Ahimsa Travel";
+const TITLE = "Únete a mi equipo de agentes de viaje";
 const DESCRIPTION =
   "Certifícate como agente de viajes y opera tu propia agencia con acompañamiento desde cero: capacitación, proveedores globales y comisiones en dólares.";
 
@@ -23,7 +23,8 @@ export const metadata: Metadata = {
     url: "/unete-a-mi-equipo",
     type: "website",
     locale: "es_MX",
-    images: [{ url: JOIN_HERO.image }],
+    // Mientras no exista la foto del hero de esta página, la general.
+    images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
   },
 };
 
