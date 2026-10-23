@@ -50,7 +50,7 @@ export default function SliderControls({
       <div className="w-24">
         <p className="font-figtree text-[13px] tabular-nums">
           <span className="text-ink">{pad(index + 1)}</span>
-          <span className="text-ink/40"> / {pad(total)}</span>
+          <span className="text-ink/60"> / {pad(total)}</span>
         </p>
         <div aria-hidden="true" className="mt-2 h-[2px] w-full bg-ink/15">
           <div

@@ -86,7 +86,7 @@ export default function Steps() {
             <span
               key={step.number}
               className={`w-6 transition-colors duration-300 ${
-                i === active ? "font-medium text-ink" : "text-ink/35"
+                i === active ? "font-medium text-ink" : "text-ink/60"
               }`}
             >
               {step.number}
@@ -115,7 +115,7 @@ export default function Steps() {
                   data-step-anchor
                   aria-hidden="true"
                   className={`block font-fraunces font-light text-[64px] leading-none transition-colors duration-500 lg:text-[96px] ${
-                    isActive ? "text-accent" : "text-accent/40"
+                    isActive ? "text-accent-dark" : "text-accent-dark/40"
                   }`}
                 >
                   {step.number}

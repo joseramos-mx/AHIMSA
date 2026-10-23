@@ -38,7 +38,8 @@ function NavItem({ progress, index, atEnd, href, label }: NavItemProps) {
   const y = useTransform(progress, [start, end], [10, 0]);
 
   return (
-    <motion.div style={{ opacity, y }}>
+    // Visible al enfocarlo con teclado aunque el scroll aún no lo muestre.
+    <motion.div style={{ opacity, y }} className="[&:focus-within]:!opacity-100 [&:focus-within]:![transform:none]">
       <Link
         href={href}
         className={`font-figtree text-sm transition-colors duration-300 ${
@@ -64,7 +65,8 @@ function NavCta({
   const y = useTransform(progress, [start, end], [10, 0]);
 
   return (
-    <motion.div style={{ opacity, y }}>
+    // Visible al enfocarlo con teclado aunque el scroll aún no lo muestre.
+    <motion.div style={{ opacity, y }} className="[&:focus-within]:!opacity-100 [&:focus-within]:![transform:none]">
       <Link
         href={CTA.href}
         className="inline-flex items-center font-figtree text-sm bg-white text-ink px-4 py-2 rounded-[2px] hover:bg-cream transition-colors"
@@ -354,7 +356,7 @@ function MobileMenuButton({
       type="button"
       onClick={onOpen}
       aria-label="Abrir menú"
-      className={`md:hidden -mr-2 p-2 transition-colors duration-300 ${
+      className={`md:hidden -mr-2 p-2 transition-colors duration-300 focus-visible:!opacity-100 focus-visible:![transform:none] ${
         atEnd ? "text-ink" : "text-white"
       }`}
       style={{ opacity, y }}

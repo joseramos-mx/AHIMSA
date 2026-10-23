@@ -36,7 +36,7 @@ const RESEND_API_URL = process.env.RESEND_API_URL || "https://api.resend.com";
 
 export const isLeadEmailConfigured = () => Boolean(process.env.RESEND_API_KEY);
 
-const escapeHtml = (s: string) =>
+export const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
 const formatDate = (iso: string) =>
@@ -143,43 +143,60 @@ export function buildLeadEmail(d: LeadData, priority: LeadPriority) {
   return { subject, html, text };
 }
 
-/** Envía el aviso. Devuelve true si Resend lo aceptó. Nunca lanza. */
-export async function sendLeadEmail(
-  d: LeadData,
-  priority: LeadPriority,
-  idempotencyKey?: string
-): Promise<boolean> {
+/**
+ * Envía un correo interno (a Fátima) por Resend. Devuelve true si Resend lo
+ * aceptó. Nunca lanza. Lo usan el aviso de leads y las solicitudes ARCO.
+ */
+export async function sendInternalEmail(opts: {
+  subject: string;
+  html: string;
+  text: string;
+  /** Correo de quien escribió: "responder" le contesta directo. */
+  replyTo?: string;
+  idempotencyKey?: string;
+  /** Prefijo para los logs, p. ej. "[leads]". */
+  tag: string;
+}): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.warn("[leads] RESEND_API_KEY no está configurada; no se envió el correo");
+    console.warn(`${opts.tag} RESEND_API_KEY no está configurada; no se envió el correo`);
     return false;
   }
-  const { subject, html, text } = buildLeadEmail(d, priority);
   try {
     const res = await fetch(`${RESEND_API_URL}/emails`, {
       method: "POST",
       headers: {
         authorization: `Bearer ${apiKey}`,
         "content-type": "application/json",
-        ...(idempotencyKey ? { "idempotency-key": idempotencyKey } : {}),
+        ...(opts.idempotencyKey ? { "idempotency-key": opts.idempotencyKey } : {}),
       },
       body: JSON.stringify({
         from: process.env.LEADS_EMAIL_FROM || DEFAULT_FROM,
         to: [process.env.LEADS_EMAIL_TO || CONTACT_EMAIL],
-        reply_to: d.email,
-        subject,
-        html,
-        text,
+        ...(opts.replyTo ? { reply_to: opts.replyTo } : {}),
+        subject: opts.subject,
+        html: opts.html,
+        text: opts.text,
       }),
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) {
-      console.error("[leads] Resend respondió", res.status, await res.text().catch(() => ""));
+      console.error(`${opts.tag} Resend respondió`, res.status, await res.text().catch(() => ""));
       return false;
     }
     return true;
   } catch (error) {
-    console.error("[leads] no se pudo enviar el correo", error);
+    console.error(`${opts.tag} no se pudo enviar el correo`, error);
     return false;
   }
+}
+
+/** Envía el aviso de un lead nuevo. */
+export async function sendLeadEmail(
+  d: LeadData,
+  priority: LeadPriority,
+  idempotencyKey?: string
+): Promise<boolean> {
+  const { subject, html, text } = buildLeadEmail(d, priority);
+  return sendInternalEmail({ subject, html, text, replyTo: d.email, idempotencyKey, tag: "[leads]" });
 }

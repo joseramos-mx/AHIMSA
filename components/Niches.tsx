@@ -77,7 +77,7 @@ export default function Niches() {
             key={n.slug}
             custom={i}
             {...itemMotion}
-            className="snap-start shrink-0 w-[80%]"
+            className="snap-start shrink-0 w-[80%] [&:focus-within]:!opacity-100 [&:focus-within]:![transform:none]"
           >
             <NicheCard {...n} />
           </motion.li>
@@ -93,7 +93,7 @@ export default function Niches() {
         "
       >
         {NICHES.map((n, i) => (
-          <motion.li key={n.slug} custom={i} {...itemMotion} className="flex">
+          <motion.li key={n.slug} custom={i} {...itemMotion} className="flex [&:focus-within]:!opacity-100 [&:focus-within]:![transform:none]">
             <NicheCard {...n} />
           </motion.li>
         ))}

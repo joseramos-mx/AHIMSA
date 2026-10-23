@@ -137,12 +137,9 @@ export async function submitLead(input: unknown): Promise<SubmitLeadResult> {
     source_path: d.sourcePath || null,
     utm: Object.keys(utm).length ? utm : null,
   };
-  // …más los datos técnicos que solo se guardan en Supabase.
-  const row = {
-    ...lead,
-    ip_hash: ipHash,
-    user_agent: h.get("user-agent")?.slice(0, 300) ?? null,
-  };
+  // …más el hash de IP (solo para el límite de envíos; se borra a las 24 h).
+  // No se guarda el user agent ni la IP en claro: datos mínimos.
+  const row = { ...lead, ip_hash: ipHash };
 
   let inserted: { id: string; created_at: string } | null = null;
   if (supabase) {
@@ -156,7 +153,7 @@ export async function submitLead(input: unknown): Promise<SubmitLeadResult> {
   }
 
   // 5. Avisos en paralelo: correo a Fátima (Resend) y n8n (solo si se
-  //    guardó; sin ip_hash ni user agent). Si fallan, solo se registra.
+  //    guardó; sin ip_hash). Si fallan, solo se registra.
   const [emailed] = await Promise.all([
     sendLeadEmail(d, priority, inserted?.id),
     inserted

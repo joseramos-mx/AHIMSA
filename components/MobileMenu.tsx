@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { CTA, NAV_LINKS, navHref } from "@/lib/nav";
@@ -16,19 +16,49 @@ type MobileMenuProps = {
 export default function MobileMenu({ open, onClose }: MobileMenuProps) {
   const reduceMotion = useReducedMotion();
   const pathname = usePathname();
+  const dialogRef = useRef<HTMLDivElement>(null);
 
-  // Lock body scroll + handle Escape while open.
+  // Mientras está abierto: bloquea el scroll, Esc cierra, el foco entra al
+  // menú y Tab no se sale de él; al cerrar, el foco vuelve a donde estaba
+  // (el botón "Abrir menú").
   useEffect(() => {
     if (!open) return;
+    const previous = document.activeElement as HTMLElement | null;
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    const focusables = () =>
+      Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        ) ?? []
+      );
+    const raf = requestAnimationFrame(() => focusables()[0]?.focus());
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => {
+      cancelAnimationFrame(raf);
       document.body.style.overflow = original;
       window.removeEventListener("keydown", onKey);
+      previous?.focus();
     };
   }, [open, onClose]);
 
@@ -39,6 +69,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
       {open && (
         <motion.div
           key="mobile-menu"
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label="Menú principal"

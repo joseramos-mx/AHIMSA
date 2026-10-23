@@ -20,7 +20,11 @@ export default function ContactView() {
   const [sent, setSent] = useState<LeadFormValues | null>(null);
 
   return (
-    <main className="bg-cream px-6 pb-24 pt-28 text-ink md:px-10 lg:pb-32 lg:pt-40">
+    <main
+      id="contenido"
+      tabIndex={-1}
+      className="bg-cream px-6 pb-24 pt-28 text-ink focus:outline-none md:px-10 lg:pb-32 lg:pt-40"
+    >
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
         <ContactInfo kind={kind} />
         <div className="order-2 lg:col-span-7 lg:col-start-6">

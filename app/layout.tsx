@@ -88,6 +88,13 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${fraunces.variable} ${figtree.variable}`}>
       <body className="font-figtree bg-cream text-ink antialiased">
+        {/* Primer elemento enfocable: salta el header y el menú. */}
+        <a
+          href="#contenido"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:rounded-[2px] focus:bg-ink focus:px-5 focus:py-3 focus:font-figtree focus:text-[15px] focus:text-cream focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-accent"
+        >
+          Saltar al contenido
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}

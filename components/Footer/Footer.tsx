@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { NAV_LINKS, navHref } from "@/lib/nav";
 import { WHATSAPP_URL } from "@/lib/contact";
 import { SKIPER_UI_CREDIT } from "@/lib/credits";
+import { LEGAL_LINKS } from "@/lib/legal";
 import {
   CONTACT_EMAIL,
   CONTACT_HOURS,
@@ -66,7 +67,7 @@ export default function Footer() {
             en la home, con más detalle y los certificados completos) */}
         <nav
           aria-label="Pie de página"
-          className="grid grid-cols-1 gap-12 py-12 md:grid-cols-2 lg:gap-16 lg:py-10"
+          className="grid grid-cols-1 gap-12 py-12 md:grid-cols-3 lg:gap-16 lg:py-10"
         >
           <Column title="Explora">
             {NAV_LINKS.map((link) => (
@@ -110,6 +111,14 @@ export default function Footer() {
               </li>
             )}
           </Column>
+
+          <Column title="Legal">
+            {LEGAL_LINKS.map((link) => (
+              <li key={link.href}>
+                <FooterLink href={link.href}>{link.label}</FooterLink>
+              </li>
+            ))}
+          </Column>
         </nav>
       </div>
 
@@ -135,12 +144,6 @@ export default function Footer() {
             </span>
           </div>
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
-            <FooterLink
-              href="/aviso-de-privacidad"
-              className="text-[13px] text-cream/60"
-            >
-              Aviso de privacidad
-            </FooterLink>
             <FooterLink
               href={SKIPER_UI_CREDIT.href}
               external

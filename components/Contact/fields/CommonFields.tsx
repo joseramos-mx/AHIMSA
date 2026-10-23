@@ -71,7 +71,7 @@ function PrivacyField() {
           className="mt-0.5 h-5 w-5 shrink-0 accent-[#7A5A33]"
         />
         <span>
-          Acepto el{" "}
+          Leí y acepto el{" "}
           <a
             href="/aviso-de-privacidad"
             target="_blank"
@@ -81,6 +81,7 @@ function PrivacyField() {
             aviso de privacidad
             <span className="sr-only"> (se abre en una pestaña nueva)</span>
           </a>
+          . Usaré tus datos solo para responder tu solicitud.
         </span>
       </label>
       <FieldError name="privacy" />

@@ -47,7 +47,9 @@ export default function Reveal({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+      // Si algo de adentro recibe el foco (teclado) antes de que termine la
+      // animación, se muestra de inmediato: nunca se enfoca algo invisible.
+      className={`${className ?? ""} [&:focus-within]:!opacity-100 [&:focus-within]:![transform:none]`}
     >
       {children}
     </MotionTag>

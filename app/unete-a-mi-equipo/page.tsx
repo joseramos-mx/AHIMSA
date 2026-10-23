@@ -34,7 +34,7 @@ export default function UneteAMiEquipoPage() {
     <>
       {/* Sin props: header fijo en estado final; sus anclas llevan a /#… */}
       <Header />
-      <main>
+      <main id="contenido" tabIndex={-1} className="focus:outline-none">
         <JoinHero />
         <ForWho />
         <Includes />

@@ -32,7 +32,7 @@ export default function Page() {
   });
 
   return (
-    <main>
+    <main id="contenido" tabIndex={-1} className="focus:outline-none">
       <Header progress={smoothProgress} rawProgress={scrollYProgress} />
       <Hero sectionRef={heroRef} progress={smoothProgress} />
 

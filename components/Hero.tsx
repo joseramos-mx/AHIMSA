@@ -148,7 +148,7 @@ export default function Hero({ sectionRef, progress }: HeroProps) {
         {/* Hero copy */}
         <motion.div
           style={{ opacity: contentOpacity, y: contentY }}
-          className="absolute left-5 right-5 bottom-[12svh] md:left-14 md:right-auto md:bottom-16 md:max-w-[640px] text-white"
+          className="absolute left-5 right-5 bottom-[12svh] md:left-14 md:right-auto md:bottom-16 md:max-w-[640px] text-white [&:focus-within]:!opacity-100 [&:focus-within]:![transform:none]"
         >
           <HeroCopy inner />
         </motion.div>

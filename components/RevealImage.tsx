@@ -99,7 +99,7 @@ export default function RevealImage({
     >
       {failed ? (
         <div className="absolute inset-0 flex items-center justify-center bg-ink/15 p-4 text-center">
-          <span className="font-figtree text-[11px] text-ink/60 break-all">
+          <span className="font-figtree text-[11px] text-ink/80 break-all">
             {filename}
           </span>
         </div>
