@@ -14,6 +14,9 @@ const UNDERLINE = cn(
   "hover:before:origin-left hover:before:scale-x-100 focus-visible:before:scale-x-100"
 );
 
+/** Para botones del footer con el mismo aspecto que un link externo. */
+export const FOOTER_BUTTON_CLASS = cn(UNDERLINE, BASE);
+
 type FooterLinkProps = {
   href: string;
   children: ReactNode;

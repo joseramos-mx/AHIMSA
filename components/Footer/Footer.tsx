@@ -7,6 +7,7 @@ import { NAV_LINKS, navHref } from "@/lib/nav";
 import { WHATSAPP_URL } from "@/lib/contact";
 import { SKIPER_UI_CREDIT } from "@/lib/credits";
 import { LEGAL_LINKS } from "@/lib/legal";
+import { COOKIE_SETTINGS_EVENT } from "@/lib/analytics";
 import {
   CONTACT_EMAIL,
   CONTACT_HOURS,
@@ -18,7 +19,7 @@ import {
 } from "@/lib/footer";
 import SplitHeading from "@/components/SplitHeading";
 import AnimatedButton from "@/components/ui/AnimatedButton";
-import FooterLink from "./FooterLink";
+import FooterLink, { FOOTER_BUTTON_CLASS } from "./FooterLink";
 import FooterWordmark from "./FooterWordmark";
 import BackToTop from "./BackToTop";
 
@@ -118,6 +119,15 @@ export default function Footer() {
                 <FooterLink href={link.href}>{link.label}</FooterLink>
               </li>
             ))}
+            <li>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT))}
+                className={FOOTER_BUTTON_CLASS}
+              >
+                Preferencias de cookies
+              </button>
+            </li>
           </Column>
         </nav>
       </div>

@@ -24,7 +24,7 @@ export const LEGAL = {
   /** Empresa con la que opera afiliada (proveedores, pagos, certificación). */
   backingCompany: BACKING_COMPANY,
   /** Fecha de la última actualización de los textos legales. */
-  updatedAt: "22 de octubre de 2026",
+  updatedAt: "6 de noviembre de 2026",
   /** Plazo de respuesta a solicitudes ARCO (la ley marca un máximo de 20
    *  días hábiles). */
   arcoResponseDays: 20,

@@ -48,7 +48,8 @@ const SECTIONS: LegalSection[] = [
           <><strong className="font-medium">Si quieres viajar:</strong> tipo de viaje, destino, fechas o mes aproximado, noches, número de adultos y menores, edad de los menores, ocasión, presupuesto aproximado y lo que nos quieras contar de tu idea.</>,
           <><strong className="font-medium">Si es un viaje de empresa:</strong> nombre de la empresa, tu cargo, cuántas personas viajan, tipo y frecuencia de los viajes y tus comentarios.</>,
           <><strong className="font-medium">Si quieres ser agente:</strong> ciudad y país, si tienes experiencia en turismo, cómo te enteraste y qué te gustaría vender.</>,
-          <><strong className="font-medium">Datos técnicos mínimos:</strong> la página desde la que llegaste, los parámetros de campaña de la liga (por ejemplo, utm_source) y una huella cifrada e irreversible de tu dirección IP que solo sirve para evitar envíos masivos y se borra a las 24 horas. No guardamos tu dirección IP ni datos de tu navegador.</>,
+          <><strong className="font-medium">Datos técnicos mínimos:</strong> la página desde la que llegaste, los parámetros de campaña de la liga (por ejemplo, utm_source) y una huella cifrada e irreversible de tu dirección IP que solo sirve para evitar envíos masivos y se borra a las 24 horas. Con tu solicitud no guardamos tu dirección IP ni datos de tu navegador.</>,
+          <><strong className="font-medium">Si aceptas las cookies de analítica:</strong> cómo navegas por el sitio (páginas vistas, clics, desplazamiento), datos de tu dispositivo y navegador, y grabaciones de la sesión. Lo que escribes en los formularios queda oculto en esas grabaciones.</>,
           <><strong className="font-medium">Si contratas un viaje:</strong> los datos que pidan los proveedores para emitir tus reservas (por ejemplo, nombre como aparece en el pasaporte, fecha de nacimiento, número de pasaporte o datos de facturación). Estos se piden directamente en ese momento, no en este sitio.</>,
         ]}
       />,
@@ -71,7 +72,8 @@ const SECTIONS: LegalSection[] = [
           "Si te interesa ser agente, darte información sobre el programa.",
         ]}
       />,
-      "No usamos tus datos para publicidad, perfiles comerciales ni ninguna otra finalidad secundaria. Si algún día quisiéramos hacerlo, te pediríamos tu consentimiento por separado.",
+      "Solo si aceptas las cookies de analítica, usamos además la información de navegación para una finalidad secundaria: entender cómo se usa el sitio y mejorarlo. Puedes rechazarlas sin que esto afecte el servicio.",
+      "No usamos tus datos para publicidad ni perfiles comerciales. Si algún día quisiéramos hacerlo, te pediríamos tu consentimiento por separado.",
     ],
   },
   {
@@ -87,6 +89,7 @@ const SECTIONS: LegalSection[] = [
           "Resend: envío del aviso por correo de cada solicitud.",
           "n8n: automatización interna para dar seguimiento a las solicitudes.",
           "Google (Gmail): buzón de correo donde recibimos y respondemos tus mensajes.",
+          "Google (Tag Manager y Analytics) y Contentsquare (Hotjar): analítica y grabaciones de la navegación, solo si las aceptas.",
         ]}
       />,
       `Si contratas un viaje, compartiremos los datos necesarios con los proveedores que lo hacen posible (aerolíneas, hoteles, operadores, navieras, aseguradoras) y con ${LEGAL.backingCompany}, empresa con la que operamos para reservas y pagos. Estas transferencias son necesarias para cumplir lo que contrataste, por lo que no requieren tu consentimiento adicional. También podemos compartir datos cuando una autoridad competente lo requiera conforme a la ley.`,
@@ -112,9 +115,11 @@ const SECTIONS: LegalSection[] = [
     id: "cookies",
     title: "Cookies y tecnologías de rastreo",
     body: [
-      "Este sitio no usa cookies de publicidad ni de analítica, ni herramientas de rastreo de terceros. Las tipografías se sirven desde nuestro propio sitio, sin contactar a otros servidores.",
+      "Con tu permiso, este sitio usa Google Tag Manager, Google Analytics y Contentsquare (Hotjar) para entender cómo se navega y mejorarlo: páginas vistas, clics, desplazamiento y grabaciones de la sesión. Estas herramientas no se cargan hasta que aceptas en el aviso de cookies, y si las rechazas el sitio funciona igual. No usamos cookies de publicidad.",
+      "Puedes cambiar tu decisión en cualquier momento desde “Preferencias de cookies”, en el pie de página. Tu elección se guarda solo en tu navegador. Lo que escribes en los formularios queda oculto en las grabaciones.",
+      "Las tipografías se sirven desde nuestro propio sitio, sin contactar a otros servidores.",
       "Tu navegador puede guardar archivos temporales (caché) para que el sitio cargue más rápido; no contienen datos personales y puedes borrarlos desde la configuración de tu navegador.",
-      "Si en el futuro incorporamos herramientas de analítica o cookies no esenciales, actualizaremos este aviso y te pediremos tu consentimiento antes de activarlas.",
+      "Si en el futuro incorporamos otras herramientas o cookies no esenciales, actualizaremos este aviso y te pediremos tu consentimiento antes de activarlas.",
     ],
   },
   {
@@ -127,6 +132,7 @@ const SECTIONS: LegalSection[] = [
           "La huella cifrada de tu IP se borra a las 24 horas.",
           "Las solicitudes que no se convierten en un viaje se conservan hasta 2 años desde el último contacto y después se eliminan. [Confirmar plazo]",
           "Los datos de viajes contratados se conservan el tiempo que exijan las obligaciones fiscales y legales aplicables.",
+          "Los datos de analítica y las grabaciones de la navegación se conservan hasta [plazo configurado en Google Analytics y Contentsquare].",
         ]}
       />,
       "Puedes pedir que eliminemos tus datos antes, salvo los que estemos obligados a conservar por ley.",

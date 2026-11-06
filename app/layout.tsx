@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/Footer/Footer";
 import FooterCurtain from "@/components/Footer/FooterCurtain";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import CookieConsent from "@/components/CookieConsent";
 import { FOUNDER, OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/site";
 import { CONTACT_EMAIL, SOCIAL_LINKS, isRealUrl } from "@/lib/footer";
 import { WHATSAPP_NUMBER } from "@/lib/contact";
@@ -101,6 +102,7 @@ export default function RootLayout({
         />
         <FooterCurtain footer={<Footer />}>{children}</FooterCurtain>
         <WhatsAppFloat />
+        <CookieConsent />
       </body>
     </html>
   );

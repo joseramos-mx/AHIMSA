@@ -175,6 +175,9 @@ export default function LeadForm({
   return (
     <FormProvider {...form}>
       <form
+        // Fuera de las grabaciones de sesión (Contentsquare/Hotjar).
+        data-cs-mask
+        data-hj-suppress
         // POST: si algo se enviara de forma nativa, los datos nunca van en la URL.
         method="post"
         noValidate

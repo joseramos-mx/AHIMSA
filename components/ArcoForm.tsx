@@ -61,7 +61,7 @@ export default function ArcoForm() {
     ) : null;
 
   return (
-    <form ref={formRef} action={action} noValidate className="mt-12 flex flex-col gap-8 rounded-[2px] border border-ink/15 p-6 md:p-8" aria-labelledby="arco-form-title">
+    <form ref={formRef} action={action} noValidate data-cs-mask data-hj-suppress className="mt-12 flex flex-col gap-8 rounded-[2px] border border-ink/15 p-6 md:p-8" aria-labelledby="arco-form-title">
       <h2 id="arco-form-title" className="font-fraunces text-[28px] font-light leading-tight">
         Enviar una solicitud
       </h2>
