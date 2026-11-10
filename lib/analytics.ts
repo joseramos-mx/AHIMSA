@@ -1,9 +1,12 @@
-/** Contenedor de Google Tag Manager. */
-export const GTM_ID = "GTM-N5FQQ63J";
-/** Tag de Contentsquare (Hotjar). */
+/** Contenedor de Google Tag Manager con Google Analytics (permiso de analítica). */
+export const GTM_ANALYTICS_ID = "GTM-N5FQQ63J";
+/** Contenedor de Google Tag Manager con Google Ads (permiso de publicidad). */
+export const GTM_ADS_ID = "GTM-W2L9HRCG";
+/** Tag de Contentsquare (Hotjar), permiso de analítica. */
 export const CONTENTSQUARE_TAG_ID = "089aa20146d97";
 
-export type Consent = "granted" | "denied";
+/** Lo que la persona aceptó, por categoría. */
+export type Consent = { analytics: boolean; marketing: boolean };
 
 const CONSENT_KEY = "ahimsa-cookie-consent";
 /** Evento con el que el footer vuelve a abrir el aviso de cookies. */
@@ -12,7 +15,13 @@ export const COOKIE_SETTINGS_EVENT = "ahimsa:cookie-settings";
 export function readConsent(): Consent | null {
   try {
     const value = localStorage.getItem(CONSENT_KEY);
-    return value === "granted" || value === "denied" ? value : null;
+    // Formato anterior (solo analítica): "granted" | "denied".
+    if (value === "granted" || value === "denied") {
+      return { analytics: value === "granted", marketing: false };
+    }
+    if (!value) return null;
+    const parsed = JSON.parse(value);
+    return { analytics: parsed.analytics === true, marketing: parsed.marketing === true };
   } catch {
     return null;
   }
@@ -20,12 +29,16 @@ export function readConsent(): Consent | null {
 
 export function saveConsent(consent: Consent) {
   try {
-    localStorage.setItem(CONSENT_KEY, consent);
+    localStorage.setItem(CONSENT_KEY, JSON.stringify(consent));
   } catch {}
 }
 
-/** Al retirar el permiso: borra las cookies de Google y Contentsquare/Hotjar. */
-export function clearAnalyticsCookies() {
+/** Cookies de cada categoría, para borrarlas al retirar el permiso. */
+export const ANALYTICS_COOKIES = /^(_cs|_hj|_ga|_gid)/;
+export const MARKETING_COOKIES = /^(_gcl|_gac)/;
+
+/** Al retirar un permiso: borra las cookies que coinciden con `pattern`. */
+export function clearCookies(pattern: RegExp) {
   const parts = window.location.hostname.split(".");
   const domains = [""];
   for (let i = 0; i < parts.length - 1; i++) {
@@ -33,7 +46,7 @@ export function clearAnalyticsCookies() {
   }
   for (const cookie of document.cookie.split("; ")) {
     const name = cookie.split("=")[0];
-    if (!/^(_cs|_hj|_ga|_gid|_gcl)/.test(name)) continue;
+    if (!pattern.test(name)) continue;
     for (const domain of domains) {
       document.cookie = `${name}=; Max-Age=0; path=/${domain}`;
     }

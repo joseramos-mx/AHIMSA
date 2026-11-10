@@ -5,10 +5,13 @@ import Script from "next/script";
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
+  ANALYTICS_COOKIES,
   CONTENTSQUARE_TAG_ID,
   COOKIE_SETTINGS_EVENT,
-  GTM_ID,
-  clearAnalyticsCookies,
+  GTM_ADS_ID,
+  GTM_ANALYTICS_ID,
+  MARKETING_COOKIES,
+  clearCookies,
   readConsent,
   saveConsent,
   type Consent,
@@ -21,10 +24,37 @@ const PILL =
   "min-h-11 rounded-full px-4 text-[14px] font-medium transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream";
 const PILL_NEUTRAL = `${PILL} bg-cream/10 text-cream hover:bg-cream/20`;
 
+const ALL: Consent = { analytics: true, marketing: true };
+const NONE: Consent = { analytics: false, marketing: false };
+
 /**
- * Tarjeta de cookies y carga de analítica. Google Tag Manager y Contentsquare
- * (Hotjar) solo se cargan si la persona acepta, y solo en producción. El
- * footer vuelve a abrir la tarjeta, ya desplegada, para cambiar la decisión.
+ * Modo de consentimiento de Google + carga de los contenedores de GTM. El
+ * de analítica también trae Google Ads; con `ad_*` en "denied" esa parte no
+ * usa cookies ni datos del usuario hasta que se acepta la publicidad (solo
+ * manda avisos sin cookies, y con `ads_data_redaction` sin identificadores).
+ */
+function gtmBootstrap({ analytics, marketing }: Consent) {
+  const state = (granted: boolean) => (granted ? "granted" : "denied");
+  const containers = [
+    ...(analytics ? [GTM_ANALYTICS_ID] : []),
+    ...(marketing ? [GTM_ADS_ID] : []),
+  ];
+  return `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',${JSON.stringify({
+    analytics_storage: state(analytics),
+    ad_storage: state(marketing),
+    ad_user_data: state(marketing),
+    ad_personalization: state(marketing),
+  })});
+${marketing ? "" : "gtag('set','ads_data_redaction',true);\n"}dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+${JSON.stringify(containers)}.forEach(function(id){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtm.js?id='+id;document.head.appendChild(s);});`;
+}
+
+/**
+ * Tarjeta de cookies y carga de analítica y publicidad, solo en producción:
+ * - Analítica: GTM con Google Analytics y Contentsquare (Hotjar).
+ * - Publicidad: GTM con Google Ads.
+ * El footer vuelve a abrir la tarjeta, ya desplegada, para cambiar la decisión.
  */
 export default function CookieConsent() {
   // undefined: aún sin leer localStorage (igual que en el servidor).
@@ -32,6 +62,7 @@ export default function CookieConsent() {
   const [open, setOpen] = useState(false);
   const [customizing, setCustomizing] = useState(false);
   const [analytics, setAnalytics] = useState(false);
+  const [marketing, setMarketing] = useState(false);
   const reduce = useReducedMotion();
   const panelId = useId();
   const customizeRef = useRef<HTMLButtonElement>(null);
@@ -44,7 +75,8 @@ export default function CookieConsent() {
     const onOpen = () => {
       const current = readConsent();
       returnFocusRef.current = document.activeElement as HTMLElement | null;
-      setAnalytics(current === "granted");
+      setAnalytics(current?.analytics ?? false);
+      setMarketing(current?.marketing ?? false);
       setCustomizing(true);
       setOpen(true);
       requestAnimationFrame(() => customizeRef.current?.focus());
@@ -55,9 +87,13 @@ export default function CookieConsent() {
 
   const decide = (next: Consent) => {
     saveConsent(next);
-    if (next === "denied" && consent === "granted") {
-      // Los scripts ya cargados no se pueden descargar: se recarga sin ellos.
-      clearAnalyticsCookies();
+    const changed =
+      consent && (consent.analytics !== next.analytics || consent.marketing !== next.marketing);
+    if (changed) {
+      // Los scripts ya cargados no se pueden descargar ni reconfigurar: se
+      // recarga con la nueva elección.
+      if (consent.analytics && !next.analytics) clearCookies(ANALYTICS_COOKIES);
+      if (consent.marketing && !next.marketing) clearCookies(MARKETING_COOKIES);
       window.location.reload();
       return;
     }
@@ -70,20 +106,16 @@ export default function CookieConsent() {
 
   return (
     <>
-      {consent === "granted" && process.env.NODE_ENV === "production" && (
-        <>
-          <Script id="gtm-init" strategy="afterInteractive">
-            {`window.dataLayer=window.dataLayer||[];window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});`}
-          </Script>
-          <Script
-            src={`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`}
-            strategy="afterInteractive"
-          />
-          <Script
-            src={`https://t.contentsquare.net/uxa/${CONTENTSQUARE_TAG_ID}.js`}
-            strategy="afterInteractive"
-          />
-        </>
+      {consent && (consent.analytics || consent.marketing) && process.env.NODE_ENV === "production" && (
+        <Script id="gtm-init" strategy="afterInteractive">
+          {gtmBootstrap(consent)}
+        </Script>
+      )}
+      {consent?.analytics && process.env.NODE_ENV === "production" && (
+        <Script
+          src={`https://t.contentsquare.net/uxa/${CONTENTSQUARE_TAG_ID}.js`}
+          strategy="afterInteractive"
+        />
       )}
 
       <AnimatePresence>
@@ -102,8 +134,8 @@ export default function CookieConsent() {
               <div>
                 <p className="text-[15px] font-medium leading-snug">Tú decides sobre las cookies</p>
                 <p className="mt-1 text-[14px] leading-[1.45] text-cream/70">
-                  Con tu permiso medimos cómo se usa el sitio para mejorarlo. Puedes cambiar de
-                  opinión cuando quieras.{" "}
+                  Con tu permiso medimos cómo se usa el sitio y los resultados de nuestros
+                  anuncios. Puedes cambiar de opinión cuando quieras.{" "}
                   <Link
                     href="/aviso-de-privacidad#cookies"
                     className="underline underline-offset-2 hover:text-cream"
@@ -138,6 +170,12 @@ export default function CookieConsent() {
                       checked={analytics}
                       onChange={setAnalytics}
                     />
+                    <CookieOption
+                      title="Publicidad"
+                      description="Google Ads: si llegaste por un anuncio y si enviaste una solicitud (con tu correo y teléfono cifrados)."
+                      checked={marketing}
+                      onChange={setMarketing}
+                    />
                   </div>
                 </motion.div>
               )}
@@ -158,17 +196,17 @@ export default function CookieConsent() {
                 {customizing ? (
                   <button
                     type="button"
-                    onClick={() => decide(analytics ? "granted" : "denied")}
+                    onClick={() => decide({ analytics, marketing })}
                     className={`${PILL} bg-cream text-ink hover:bg-cream/85`}
                   >
                     Guardar
                   </button>
                 ) : (
                   <>
-                    <button type="button" onClick={() => decide("denied")} className={PILL_NEUTRAL}>
+                    <button type="button" onClick={() => decide(NONE)} className={PILL_NEUTRAL}>
                       Rechazar
                     </button>
-                    <button type="button" onClick={() => decide("granted")} className={PILL_NEUTRAL}>
+                    <button type="button" onClick={() => decide(ALL)} className={PILL_NEUTRAL}>
                       Aceptar
                     </button>
                   </>
